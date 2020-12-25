@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inventory.data", "inventory.data\inventory.data.csproj", "{A9EC1C8D-C655-4323-BEB6-DFFBB1C5C3FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventory.web.api", "inventory.api\inventory.web.api.csproj", "{061E8410-625A-48F7-9F09-0AB75DE680D5}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventory.service", "inventory.service\inventory.service.csproj", "{ADF7BE8F-13B6-43B5-B1A9-83FA2D434509}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventory.model", "inventory.model\inventory.model.csproj", "{8530B851-6CF5-44CF-9934-4478BA3C2CC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inventory.web", "inventory.web\inventory.web.csproj", "{07699DD9-727B-4994-86AC-CD6735AEFCB4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inventory.web.api", "inventory.web.api\inventory.web.api.csproj", "{4EB43F8E-4FC9-4F8C-BEE8-D518626D806B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{A9EC1C8D-C655-4323-BEB6-DFFBB1C5C3FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9EC1C8D-C655-4323-BEB6-DFFBB1C5C3FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9EC1C8D-C655-4323-BEB6-DFFBB1C5C3FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{061E8410-625A-48F7-9F09-0AB75DE680D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{061E8410-625A-48F7-9F09-0AB75DE680D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{061E8410-625A-48F7-9F09-0AB75DE680D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{061E8410-625A-48F7-9F09-0AB75DE680D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADF7BE8F-13B6-43B5-B1A9-83FA2D434509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ADF7BE8F-13B6-43B5-B1A9-83FA2D434509}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF7BE8F-13B6-43B5-B1A9-83FA2D434509}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{07699DD9-727B-4994-86AC-CD6735AEFCB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07699DD9-727B-4994-86AC-CD6735AEFCB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07699DD9-727B-4994-86AC-CD6735AEFCB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EB43F8E-4FC9-4F8C-BEE8-D518626D806B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EB43F8E-4FC9-4F8C-BEE8-D518626D806B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EB43F8E-4FC9-4F8C-BEE8-D518626D806B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EB43F8E-4FC9-4F8C-BEE8-D518626D806B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
