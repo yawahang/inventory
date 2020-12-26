@@ -6,7 +6,7 @@ namespace inventory.api.Controllers
     [Produces("application/json")]
     [EnableCors("AllowOrigin"), Route("api/[controller]/[action]/{id?}")]
     [ApiController]
-    public class BaseController : Controller
+    public class BaseController : ControllerBase
     {
 
     }

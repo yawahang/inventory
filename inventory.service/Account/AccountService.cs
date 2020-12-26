@@ -1,8 +1,11 @@
 ﻿
 using Dapper;
+using inventory.model;
 using inventory.service.Data;
 using System.Data;
 using System.Threading.Tasks;
+using System;
+using Newtonsoft.Json;
 
 namespace inventory.service.Account
 {
@@ -14,12 +17,19 @@ namespace inventory.service.Account
             _ds = ds;
         }
 
-        public async Task Login<T>(string json)
+        public async Task<MvUser> Login(string json)
         {
-            var dbparams = new DynamicParameters();
-            dbparams.Add("Json", json, DbType.String);
-            await _ds.Get<T>("dbo.SpUserSel", dbparams, commandType: CommandType.StoredProcedure);
+            try
+            {
+                var param = new DynamicParameters();
+                param.Add("Json", json, DbType.String);
+                var result = await _ds.Get<string>("dbo.SpUserSel", param);
+                return JsonConvert.DeserializeObject<MvUser>(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
     }
 }

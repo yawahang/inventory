@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,9 +12,8 @@ namespace inventory.service.Data
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionstring = "";
-        public int CurrentPersonId { get; set; }
+        public int CurrentUserId { get; set; }
         public string Role { get; set; }
-        public string UserContext { get; set; }
 
         public DataService(IConfiguration configuration)
         {
@@ -21,12 +21,20 @@ namespace inventory.service.Data
             _connectionstring = _configuration[$"ConnectionString:{_configuration.GetSection("ApiEnvironment").Value}"] ?? _configuration["ConnectionString:Default"];
         }
 
-        public async Task<IDbConnection> GetDbconnection()
+        public async Task<IDbConnection> GetConnection()
         {
             var conn = new SqlConnection(_connectionstring);
-            if (conn.State == ConnectionState.Closed) conn.Open();
-
-            await conn.ExecuteAsync("SpSessionContextTsk", new { UserContext }, commandType: CommandType.StoredProcedure);
+            conn.Open();
+            try
+            {
+                var param = new DynamicParameters();
+                param.Add("Json", JsonConvert.SerializeObject(new { UserId = CurrentUserId }), DbType.String);
+                await conn.ExecuteScalarAsync("utl.SetContextInfo", param, commandType: CommandType.StoredProcedure);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             return conn;
         }
 
@@ -35,12 +43,14 @@ namespace inventory.service.Data
 
         }
 
-        public async Task<T> Get<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.Text)
+        public async Task<T> Get<T>(string sp, DynamicParameters parms)
         {
-            using var conn = await GetDbconnection();
+            using var conn = await GetConnection();
             try
             {
-                return await conn.QueryFirstOrDefaultAsync<T>(sp, parms, commandType: commandType);
+                var result = await conn.QueryFirstOrDefaultAsync<T>(sp, parms, commandType: CommandType.StoredProcedure);
+                conn.Close();
+                return result;
             }
             catch (Exception ex)
             {
@@ -48,12 +58,14 @@ namespace inventory.service.Data
             }
         }
 
-        public async Task<T> Insert<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
+        public async Task<T> Insert<T>(string sp, DynamicParameters parms)
         {
-            using var conn = await GetDbconnection();
+            using var conn = await GetConnection();
             try
             {
-                return await conn.ExecuteScalarAsync<T>(sp, parms, commandType: commandType);
+                var result = await conn.ExecuteScalarAsync<T>(sp, parms, commandType: CommandType.StoredProcedure);
+                conn.Close();
+                return result;
             }
             catch (Exception ex)
             {
@@ -61,12 +73,14 @@ namespace inventory.service.Data
             }
         }
 
-        public async Task<T> Update<T>(string sp, DynamicParameters parms, CommandType commandType = CommandType.StoredProcedure)
+        public async Task<T> Update<T>(string sp, DynamicParameters parms)
         {
-            using var conn = await GetDbconnection();
+            using var conn = await GetConnection();
             try
             {
-                return await conn.ExecuteScalarAsync<T>(sp, parms, commandType: commandType);
+                var result = await conn.ExecuteScalarAsync<T>(sp, parms, commandType: CommandType.StoredProcedure);
+                conn.Close();
+                return result;
             }
             catch (Exception ex)
             {

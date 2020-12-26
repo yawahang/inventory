@@ -1,4 +1,5 @@
 using inventory.service.Account;
+using inventory.service.Base;
 using inventory.service.Data;
 using inventory.service.Sales;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,16 +11,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace inventory.api
 {
     public class Startup
     {
         public IConfigurationRoot Configuration { get; }
-        //private readonly string _webRootPath = "";
         public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -27,8 +29,6 @@ namespace inventory.api
                  .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                  .AddEnvironmentVariables();
             Configuration = builder.Build();
-
-            //_webRootPath = env.WebRootPath;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -45,119 +45,129 @@ namespace inventory.api
                     {
                         builder.WithOrigins(allowOrigin.ToArray())
                         .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader()
+                       .AllowCredentials();
                     });
             });
 
             services.AddControllers();
 
-            //string domain = $"https://{Configuration["Auth0:Domain"]}/";
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(options =>
-            //{
-            //    options.Authority = domain;
-            //    //options.ClaimsIssuer = Configuration["Jwt:Issuer"];
-            //    options.Audience = Configuration["Auth0:Audience"];
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidateLifetime = true,
-            //        ValidateIssuerSigningKey = true,
-            //        ValidIssuer = Configuration["Jwt:Issuer"],
-            //        ValidAudience = Configuration["Jwt:Issuer"],
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
-            //    };
-            //});
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.Authority = Configuration["Auth0:Domain"];
+                options.ClaimsIssuer = Configuration["Jwt:Issuer"];
+                options.Audience = Configuration["Auth0:Audience"];
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["ApiKey"]))
+                };
 
-            //services.Configure<GzipCompressionProviderOptions>(options =>
-            //{
-            //    options.Level = CompressionLevel.Fastest;
-            //});
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+            });
 
-            //services.AddResponseCompression(options =>
-            //{
-            //    options.EnableForHttps = true;
-            //    options.Providers.Add<GzipCompressionProvider>();
-            //    options.Providers.Add<BrotliCompressionProvider>();
-            //    options.MimeTypes = new[]
-            //    {
-            //        // Default
-            //        "text/plain",
-            //        "text/css",
-            //        "application/javascript",
-            //        "text/html",
-            //        "application/xml",
-            //        "text/xml",
-            //        "application/json",
-            //        "text/json",
-            //        // Custom
-            //        "image/svg",
-            //        "image/jpeg",
-            //        "image/png",
-            //        "text/html",
-            //        "video/mp4"
-            //    };
-            //});
+            services.Configure<GzipCompressionProviderOptions>(options =>
+            {
+                options.Level = CompressionLevel.Fastest;
+            });
 
-            //services.AddMemoryCache();
+            services.AddResponseCompression(options =>
+            {
+                options.EnableForHttps = true;
+                options.Providers.Add<GzipCompressionProvider>();
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.MimeTypes = new[]
+                {
+                    // Default
+                    "text/plain",
+                    "text/css",
+                    "application/javascript",
+                    "text/html",
+                    "application/xml",
+                    "text/xml",
+                    "application/json",
+                    "text/json",
+                    // Custom
+                    "image/svg",
+                    "image/jpeg",
+                    "image/png",
+                    "text/html",
+                    "video/mp4"
+                };
+            });
 
-            //services.AddDbContext<AppContext>(options =>
-            //          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            ////Register dapper in scope    
-            //services.AddScoped<IDapper, Dapper>();
+            services.AddMemoryCache();
 
-            services.AddScoped<IDataService, DataService>()
-                .AddTransient<IAccountService, AccountService>();
-            //.AddTransient<ISalesService, SalesService>();
+            services.AddTransient<IBaseService, BaseService>()
+                .AddTransient<IAccountService, AccountService>()
+                .AddTransient<ISalesService, SalesService>()
+                .AddScoped<IDataService, DataService>()
+                .AddSingleton(Configuration)
+                .AddHttpContextAccessor();
 
-            services.AddSingleton<IConfiguration>(Configuration);
-
-            //services.AddSession(options =>
-            //{
-            //    options.Cookie.Name = Configuration.GetSection("Cookie:Name").Get<string>();
-            //    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //    options.Cookie.HttpOnly = true;
-            //    options.IdleTimeout = TimeSpan.FromMinutes(Configuration.GetSection("Cookie:IdleTimeout").Get<int>());
-            //});
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = Configuration.GetSection("Cookie:Name").Get<string>();
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.IdleTimeout = TimeSpan.FromMinutes(Configuration.GetSection("Cookie:IdleMinutes").Get<int>());
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Must be before UseStaticFiles to compress static files and UseMvc to compress MVC responses
-            //app.UseResponseCompression();
+            app.UseResponseCompression();
 
-            //app.UseDefaultFiles();
+            app.UseDefaultFiles();
 
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
 
-            //app.UseFileServer(); // set wwwroot/index.html as startup file
+            app.UseFileServer(); // set wwwroot/index.html as startup file
 
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
 
-                //app.UseExceptionHandler( // custom exception handle stack trace
-                //options =>
-                //{
-                //    options.Run(
-                //        async context =>
-                //        {
-                //            context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
-                //            context.Response.ContentType = "text/html";
-                //            var exceptionObject = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
-                //            if (null != exceptionObject)
-                //            {
-                //                var errorMessage = $"<b>Error: {exceptionObject.Error.Message}</b>{exceptionObject.Error.StackTrace}";
-                //                await context.Response.WriteAsync(errorMessage).ConfigureAwait(false);
-                //            }
-                //        });
-                //});
+                app.UseExceptionHandler( // custom exception handle stack trace
+                options =>
+                {
+                    options.Run(
+                        async context =>
+                        {
+                            context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                            context.Response.ContentType = "text/html";
+                            var exceptionObject = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
+                            if (null != exceptionObject)
+                            {
+                                var errorMessage = $"<b>Error: {exceptionObject.Error.Message}</b>{exceptionObject.Error.StackTrace}";
+                                await context.Response.WriteAsync(errorMessage).ConfigureAwait(false);
+                            }
+                        });
+                });
             }
 
             app.UseHttpsRedirection();
@@ -166,9 +176,9 @@ namespace inventory.api
 
             app.UseCors("AllowOrigin");  // setup Chors for endpoint
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
 
-            //app.UseSession();
+            app.UseSession();
 
             app.UseAuthorization();
 

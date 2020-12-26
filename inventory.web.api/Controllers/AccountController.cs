@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace inventory.api.Controllers
 {
@@ -17,49 +18,51 @@ namespace inventory.api.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IConfiguration _configuration;
-        public AccountController(IAccountService accountService, IConfiguration configuration)
+        public AccountController(IAccountService asr, IConfiguration conf)
         {
-            _configuration = configuration;
-            _accountService = accountService;
+            _configuration = conf;
+            _accountService = asr;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        public IActionResult Login([FromBody][Required] MvLogin json)
+        public async Task<IActionResult> Login([FromBody][Required] MvLogin json)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Invalid Request!");
-            }
-
             try
             {
-                var user = _accountService.Login<MvResponse<MvUser>>(JsonConvert.SerializeObject(json));
+                var user = await _accountService.Login(JsonConvert.SerializeObject(json));
 
-                //_protector.Protect(serverName);
-                //_protector.UnProtect(serverName);
-
-                var claims = new[]
+                if (user.Error != null)
                 {
+                    return BadRequest(user.Error);
+                }
+                else
+                {
+                    //_protector.Protect(serverName);
+                    //_protector.UnProtect(serverName);
+
+                    var claims = new[]
+                    {
                             new Claim("User", JsonConvert.SerializeObject(user))
-                };
+                    };
 
-                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["ApiKey"]));
+                    var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var issuer = _configuration.GetSection("Jwt:Issuer").Value;
-                var audience = _configuration.GetSection("Jwt:Audience").Value;
-                var expires = Convert.ToInt32(_configuration.GetSection("Jwt:ExpiryDay").Value);
+                    var issuer = _configuration.GetSection("Jwt:Issuer").Value;
+                    var audience = _configuration.GetSection("Jwt:Audience").Value;
+                    var expires = Convert.ToInt32(_configuration.GetSection("Jwt:ExpiryDay").Value);
 
-                var token = new JwtSecurityToken(
-                    issuer: issuer,
-                    audience: audience,
-                    claims: claims,
-                    notBefore: DateTime.Now,
-                    expires: DateTime.Now.AddDays(expires),
-                    signingCredentials: creds);
+                    var token = new JwtSecurityToken(
+                        issuer: issuer,
+                        audience: audience,
+                        claims: claims,
+                        notBefore: DateTime.Now,
+                        expires: DateTime.Now.AddDays(expires),
+                        signingCredentials: creds);
 
-                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                    return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                }
             }
             catch (Exception ex)
             {

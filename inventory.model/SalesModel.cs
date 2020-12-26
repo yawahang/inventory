@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace inventory.model
 {
-    public class MvSales
+    public class MvSales : MvResponse
     {
         [Required]
         public int SalesId { get; set; }
