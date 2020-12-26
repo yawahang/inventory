@@ -1,7 +1,6 @@
 ﻿
 using Dapper;
-using inventory.data;
-using inventory.model;
+using inventory.service.Data;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -9,20 +8,17 @@ namespace inventory.service.Account
 {
     public class AccountService : IAccountService
     {
-        private readonly IDapper _dapper;
-        public AccountService(IDapper dapper)
+        private readonly IDataService _ds;
+        public AccountService(IDataService ds)
         {
-            _dapper = dapper;
+            _ds = ds;
         }
 
-        public async Task<MvResponse<MvUser>> Login(string json)
+        public async Task Login<T>(string json)
         {
             var dbparams = new DynamicParameters();
             dbparams.Add("Json", json, DbType.String);
-            var result = await Task.FromResult(_dapper.Get<MvResponse<MvUser>>("dbo.SpUserSel",
-                                                              dbparams,
-                                                              commandType: CommandType.StoredProcedure));
-            return result;
+            await _ds.Get<T>("dbo.SpUserSel", dbparams, commandType: CommandType.StoredProcedure);
         }
 
     }

@@ -1,47 +1,37 @@
 ﻿using Dapper;
-using inventory.data;
-using inventory.model;
+using inventory.service.Data;
 using System.Data;
 using System.Threading.Tasks;
 
 namespace inventory.service.Sales
 {
-    class SalesService : ISalesService
+    public class SalesService : ISalesService
     {
-        private readonly IDapper _dapper;
-        public SalesService(IDapper dapper)
+        private readonly IDataService _ds;
+        public SalesService(IDataService ds)
         {
-            _dapper = dapper;
+            _ds = ds;
         }
 
-        public async Task<MvResponse<MvSales>> Sales(string json)
+        public async Task Sales<T>(string json)
         {
             var dbparams = new DynamicParameters();
             dbparams.Add("Json", json, DbType.String);
-            var result = await Task.FromResult(_dapper.Get<MvResponse<MvSales>>("dbo.SpSalesSel",
-                                                              dbparams,
-                                                              commandType: CommandType.StoredProcedure));
-            return result;
+            await _ds.Get<T>("dbo.SpSalesSel", dbparams, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<MvResponse<MvSales>> Insert(string json)
+        public async Task Insert<T>(string json)
         {
             var dbparams = new DynamicParameters();
             dbparams.Add("Json", json, DbType.String);
-            var result = await Task.FromResult(_dapper.Insert<MvResponse<MvSales>>("dbo.SpSalesIns",
-                                                              dbparams,
-                                                              commandType: CommandType.StoredProcedure));
-            return result;
+            await _ds.Insert<T>("dbo.SpSalesIns", dbparams, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<MvResponse<MvSales>> Update(string json)
+        public async Task Update<T>(string json)
         {
             var dbparams = new DynamicParameters();
             dbparams.Add("Json", json, DbType.String);
-            var result = await Task.FromResult(_dapper.Update<MvResponse<MvSales>>("dbo.SpSalesUpd",
-                                                              dbparams,
-                                                              commandType: CommandType.StoredProcedure));
-            return result;
+            await _ds.Update<T>("dbo.SpSalesUpd", dbparams, commandType: CommandType.StoredProcedure);
         }
     }
 }

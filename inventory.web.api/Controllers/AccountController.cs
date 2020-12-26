@@ -34,11 +34,14 @@ namespace inventory.api.Controllers
 
             try
             {
-                var user = _accountService.Login(JsonConvert.SerializeObject(json));
+                var user = _accountService.Login<MvResponse<MvUser>>(JsonConvert.SerializeObject(json));
+
+                //_protector.Protect(serverName);
+                //_protector.UnProtect(serverName);
 
                 var claims = new[]
                 {
-                            new Claim("User", JsonConvert.SerializeObject(user.Result.Json))
+                            new Claim("User", JsonConvert.SerializeObject(user))
                 };
 
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

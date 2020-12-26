@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\inventory.data\inventory.data.csproj" />
     <ProjectReference Include="..\inventory.model\inventory.model.csproj" />
   </ItemGroup>
 

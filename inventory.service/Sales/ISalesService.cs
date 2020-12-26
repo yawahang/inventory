@@ -1,13 +1,12 @@
 ﻿
-using inventory.model;
 using System.Threading.Tasks;
 
 namespace inventory.service.Sales
 {
     public interface ISalesService
     {
-        Task<MvResponse<MvSales>> Sales(string json);
-        Task<MvResponse<MvSales>> Insert(string json);
-        Task<MvResponse<MvSales>> Update(string json);
+        Task Sales<T>(string json);
+        Task Insert<T>(string json);
+        Task Update<T>(string json);
     }
 }
