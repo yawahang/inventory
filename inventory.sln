@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inventory.model", "inventor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inventory.web", "inventory.web\inventory.web.csproj", "{07699DD9-727B-4994-86AC-CD6735AEFCB4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inventory.web.api", "inventory.web.api\inventory.web.api.csproj", "{4EB43F8E-4FC9-4F8C-BEE8-D518626D806B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inventory.webapi", "inventory.webapi\inventory.webapi.csproj", "{4EB43F8E-4FC9-4F8C-BEE8-D518626D806B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
