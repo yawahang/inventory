@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _unsubscribeAll: Subject<any>;
 
-  ohToken: any;
+  token: any;
   fmLogin: FormGroup;
   errorMessage: any;
   mvLogin: MvLogin = <MvLogin>{};
@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public fb: FormBuilder,
     public ls: LoginService,
-    private us: UtilityService,
     private ses: SessionService,
     private router: Router
   ) {
@@ -44,7 +43,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     this.errorMessage = '';
     if (this.fmLogin.valid) {
 
-      // const json = this.fmLogin.value;
       this.mvLogin.Username = this.fmLogin.get('Username').value.trim();
       this.mvLogin.Password = this.fmLogin.get('Password').value.trim();
 
@@ -52,15 +50,15 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
         if (response && response['token']) {
 
-          this.ohToken = response['token'];
+          this.token = response['token'];
 
-          this.ses.setToken(this.ohToken);
-          this.ohToken = this.ses.getTokenValueByKey('All') || {};
+          this.ses.setToken(this.token);
+          this.token = this.ses.getTokenValueByKey('All') || {};
 
-          if (this.ohToken?.RedirectUrl) {
+          if (this.token?.RedirectUrl) {
 
             this.ses.authenticated.next(true);
-            this.router.navigate([this.ohToken?.RedirectUrl], {
+            this.router.navigate([this.token?.RedirectUrl], {
               replaceUrl: true
             });
           } else {
