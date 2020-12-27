@@ -1,0 +1,22 @@
+<h1>User Login</h1>
+<br />
+<br />
+<form name="fmLogin" [formGroup]="fmLogin" class="login-form" (ngSubmit)="login()" novalidate class="example-form">
+
+  <mat-error *ngIf="errorMessage != ''">
+    {{ errorMessage }}
+  </mat-error>
+
+  <mat-form-field class="example-full-width">
+    <input matInput type="text" placeholder="Username" formControlName="Username" required>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput type="password" placeholder="Password" formControlName="Password" required>
+  </mat-form-field>
+
+  <div class="example-full-width">
+    <button mat-raised-button color="primary">Login</button>
+  </div>
+
+</form>

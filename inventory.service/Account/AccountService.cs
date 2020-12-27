@@ -17,14 +17,14 @@ namespace inventory.service.Account
             _ds = ds;
         }
 
-        public async Task<MvUser> Login(string json)
+        public async Task<MvResponse<MvUser>> Login(string json)
         {
             try
             {
                 var param = new DynamicParameters();
                 param.Add("Json", json, DbType.String);
                 var result = await _ds.Get<string>("dbo.SpUserSel", param);
-                return JsonConvert.DeserializeObject<MvUser>(result);
+                return JsonConvert.DeserializeObject<MvResponse<MvUser>>(result);
             }
             catch (Exception ex)
             {

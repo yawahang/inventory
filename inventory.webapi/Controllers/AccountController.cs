@@ -16,12 +16,12 @@ namespace inventory.webapi.Controllers
 {
     public class AccountController : BaseController
     {
-        private readonly IAccountService _accountService;
-        private readonly IConfiguration _configuration;
+        private readonly IAccountService _asr;
+        private readonly IConfiguration _conf;
         public AccountController(IAccountService asr, IConfiguration conf)
         {
-            _configuration = conf;
-            _accountService = asr;
+            _conf = conf;
+            _asr = asr;
         }
 
         [HttpPost]
@@ -30,28 +30,25 @@ namespace inventory.webapi.Controllers
         {
             try
             {
-                var user = await _accountService.Login(JsonConvert.SerializeObject(json));
+                var response = await _asr.Login(JsonConvert.SerializeObject(json));
 
-                if (user.Error != null)
+                if (response.Type == "Error")
                 {
-                    return BadRequest(user.Error);
+                    return BadRequest(response.Text);
                 }
                 else
                 {
-                    //_protector.Protect(serverName);
-                    //_protector.UnProtect(serverName);
-
                     var claims = new[]
                     {
-                            new Claim("User", JsonConvert.SerializeObject(user))
+                            new Claim("data", JsonConvert.SerializeObject(response.Data))
                     };
 
-                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["ApiKey"]));
+                    var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["ApiKey"]));
                     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    var issuer = _configuration.GetSection("Jwt:Issuer").Value;
-                    var audience = _configuration.GetSection("Jwt:Audience").Value;
-                    var expires = Convert.ToInt32(_configuration.GetSection("Jwt:ExpiryDay").Value);
+                    var issuer = _conf.GetSection("Jwt:Issuer").Value;
+                    var audience = _conf.GetSection("Jwt:Audience").Value;
+                    var expires = Convert.ToInt32(_conf.GetSection("Jwt:ExpiryDay").Value);
 
                     var token = new JwtSecurityToken(
                         issuer: issuer,

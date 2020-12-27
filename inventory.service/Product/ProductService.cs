@@ -1,5 +1,8 @@
 ﻿using Dapper;
+using inventory.model;
 using inventory.service.Data;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 
@@ -13,25 +16,28 @@ namespace inventory.service.Product
             _ds = ds;
         }
 
-        public async Task Product<T>(string json)
+        public async Task<MvResponse<List<MvProduct>>> Product(string json)
         {
             var param = new DynamicParameters();
             param.Add("Json", json, DbType.String);
-            await _ds.Get<T>("dbo.SpProductSel", param);
+            var result = await _ds.Get<string>("dbo.SpProductSel", param);
+            return JsonConvert.DeserializeObject<MvResponse<List<MvProduct>>>(result);
         }
 
-        public async Task Insert<T>(string json)
+        public async Task<MvResponse<MvProduct>> Insert(string json)
         {
             var param = new DynamicParameters();
             param.Add("Json", json, DbType.String);
-            await _ds.Insert<T>("dbo.SpProductIns", param);
+            var result = await _ds.Get<string>("dbo.SpProductIns", param);
+            return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
         }
 
-        public async Task Update<T>(string json)
+        public async Task<MvResponse<MvProduct>> Update(string json)
         {
             var param = new DynamicParameters();
             param.Add("Json", json, DbType.String);
-            await _ds.Update<T>("dbo.SpProductUpd", param);
+            var result = await _ds.Get<string>("dbo.SpProductUpd", param);
+            return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
         }
     }
 }

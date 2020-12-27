@@ -10,6 +10,6 @@ namespace inventory.service.Account
         /// </summary>
         /// <param name="Json">{"Username": "staff@admin.com","Password": "admin@123"}</param>
         /// <returns>User object</returns>
-        Task<MvUser> Login(string json);
+        Task<MvResponse<MvUser>> Login(string json);
     }
 }

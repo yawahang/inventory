@@ -12,7 +12,7 @@ namespace inventory.model
         public string Password { get; set; }
     }
 
-    public class MvUser : MvResponse
+    public class MvUser
     {
         [Required]
         public int UserId { get; set; }
@@ -36,6 +36,7 @@ namespace inventory.model
         public int ApplicationId { get; set; }
         [Required]
         public string Application { get; set; }
+        public string Url { get; set; }
     }
 
     public class MvRole

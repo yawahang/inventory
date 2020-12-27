@@ -1,12 +1,14 @@
 ﻿
+using inventory.model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace inventory.service.Product
 {
     public interface IProductService
     {
-        Task Product<T>(string json);
-        Task Insert<T>(string json);
-        Task Update<T>(string json);
+        Task<MvResponse<List<MvProduct>>> Product(string json);
+        Task<MvResponse<MvProduct>> Insert(string json);
+        Task<MvResponse<MvProduct>> Update(string json);
     }
 }

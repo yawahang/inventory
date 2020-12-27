@@ -3,7 +3,7 @@ using System;
 
 namespace inventory.model
 {
-    public class MvProduct : MvResponse
+    public class MvProduct
     {
         public int ProductId { get; set; }
         public string Product { get; set; }
