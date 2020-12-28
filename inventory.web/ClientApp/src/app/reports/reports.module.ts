@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReportsComponent } from './reports.component';
-import { GridModule, PDFModule } from '@progress/kendo-angular-grid';
+import { ExcelModule, GridModule, PDFModule } from '@progress/kendo-angular-grid';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
@@ -19,7 +19,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     GridModule,
-    PDFModule
+    PDFModule,
+    ExcelModule
   ]
 })
 export class ReportsModule {

@@ -8,7 +8,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { MatIconModule } from '@angular/material/icon';
-import { SessionService } from 'src/core/services/session.service';
+import { AuthService } from 'src/core/services/auth.service';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -21,7 +21,7 @@ const appRoutes: Routes = [
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
-    path: 'inventory',
+    path: 'product',
     loadChildren: () => import('./product/product.module').then(m => m.ProductModule)
   },
   {
@@ -45,7 +45,7 @@ const appRoutes: Routes = [
     MatIconModule
   ],
   providers: [
-    SessionService
+    AuthService
   ],
   bootstrap: [
     AppComponent

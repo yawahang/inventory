@@ -1,33 +1,50 @@
 <h1 mat-dialog-title>{{action}} Product</h1>
 <div mat-dialog-content>
-  <form name="productForm" [formGroup]="productForm" class="login-form" novalidate class="example-form">
 
-    <!-- <mat-error *ngIf="errorMessage != ''">
-    {{ errorMessage }}
-  </mat-error>
+  <form name="productForm" [formGroup]="productForm" novalidate class="w-100-p" fxLayout="column">
+    <fieldset fxLayout="column" class="mb-12">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px">
+        <mat-form-field fxFlex>
+          <input matInput type="text" placeholder="Product" formControlName="Product" required
+            [(ngModel)]="selectedProduct.Product">
+        </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput type="text" placeholder="User Name" formControlName="userName" required>
-  </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput type="text" placeholder="Description" formControlName="Description" required
+            [(ngModel)]="selectedProduct.Description">
+        </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput type="password" placeholder="Password" formControlName="password" required>
-  </mat-form-field> -->
-    <mat-form-field class="example-full-width">
-      <input matInput type="text" placeholder="Name" formControlName="name" required [(ngModel)]="selectedProduct.name">
-    </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput type="number" placeholder="Price" formControlName="Price" required
+            [(ngModel)]="selectedProduct.Price">
+        </mat-form-field>
+      </div>
 
-    <mat-form-field class="example-full-width">
-      <input matInput type="text" placeholder="Rate" formControlName="rate" required [(ngModel)]="selectedProduct.rate">
-    </mat-form-field>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px">
 
-    <mat-form-field class="example-full-width">
-      <input matInput type="text" placeholder="Quantity In Stock" formControlName="quantityStock" required
-        [(ngModel)]="selectedProduct.quantityStock">
-    </mat-form-field>
+        <mat-form-field fxFlex>
+          <input matInput type="number" placeholder="Stock" formControlName="Stock" required
+            [(ngModel)]="selectedProduct.Stock">
+        </mat-form-field>
 
+        <mat-form-field fxFlex>
+          <input matInput type="text" placeholder="Company" formControlName="Company" required
+            [(ngModel)]="selectedProduct.Price">
+        </mat-form-field>
+
+        <mat-form-field fxFlex>
+          <mat-select placeholder="Status" formControlName="StatusListItemId" required
+            [(ngModel)]="selectedProduct.StatusListItemId">
+            <mat-option *ngFor="let dt of statusList;" [value]="dt.listItemId">
+              {{ dt.ListItem }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </fieldset>
   </form>
 </div>
+
 <div mat-dialog-actions>
   <button mat-button (click)="cancelClick()" color="warn">Cancel</button>
   <button [disabled]="!productForm.valid" (click)="submitForm()" mat-raised-button color="primary">Save</button>

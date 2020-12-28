@@ -1,6 +1,4 @@
 ﻿
-using System.Collections.Generic;
-
 namespace inventory.model
 {
     public class MvResponse<T>
@@ -10,13 +8,12 @@ namespace inventory.model
         public T Data { get; set; }
     }
 
-    public class MvPagination<T>
+    public class MvPagination
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public int TotalRows { get; set; }
         public string SortBy { get; set; }
         public string SortOrder { get; set; }
-        public List<T> Property { get; set; }
     }
 }

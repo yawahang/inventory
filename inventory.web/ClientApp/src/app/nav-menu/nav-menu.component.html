@@ -8,6 +8,11 @@
       </button>
       <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
         <ul class="navbar-nav flex-grow">
+
+          <a *ngIf="asr.isAuthenticated" class="most-link" color="primary" (click)="logout()" matTooltip="Logout">
+            <mat-icon>exit_to_app</mat-icon>
+          </a>
+
           <li *ngFor="let nav of navigationList" class="nav-item" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="[nav.Url]">{{nav.Navigation}}</a>
           </li>

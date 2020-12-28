@@ -17,7 +17,6 @@ export class ProductComponent implements OnInit {
   displayedColumns: string[];
   dataSource: MatTableDataSource<MvProduct>;
   gridData: MvProduct[] = [];
-  productMsg = '';
   selectedProduct: MvProduct = <MvProduct>{};
   selection = new SelectionModel<MvProduct>(false, []);
 
@@ -35,7 +34,6 @@ export class ProductComponent implements OnInit {
 
   getProducts() {
 
-    this.productMsg = '';
     this.ps.getProduct().subscribe((result: any) => {
 
       if (result && result.data) {
@@ -46,7 +44,6 @@ export class ProductComponent implements OnInit {
 
         this.gridData = [];
         this.dataSource = new MatTableDataSource<MvProduct>();
-        this.productMsg = 'No Products!';
       }
     });
   }
@@ -90,7 +87,7 @@ export class ProductComponent implements OnInit {
           // modify grid data
           for (const index in this.gridData) {
 
-            if (this.gridData[index].productId === this.selectedProduct.productId) {
+            if (this.gridData[index].ProductId === this.selectedProduct.ProductId) {
 
               this.gridData[index] = { ...this.selectedProduct };
               this.dataSource = new MatTableDataSource<MvProduct>(this.gridData);
@@ -106,10 +103,10 @@ export class ProductComponent implements OnInit {
           this.dataSource = new MatTableDataSource<MvProduct>(this.gridData);
         }
 
-        this.us.openSnackBar('Product Added Sucessfully!', 'success');
+        this.us.openSnackBar('Product Added Sucessfully', 'success');
       } else {
 
-        this.us.openSnackBar('Action Cancelled!', 'warning');
+        this.us.openSnackBar('Action Cancelled', 'warning');
       }
     });
   }

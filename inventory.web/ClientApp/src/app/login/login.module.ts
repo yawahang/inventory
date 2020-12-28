@@ -1,14 +1,15 @@
+import { MatCardModule } from '@angular/material/card';
 import { UtilityService } from './../../core/services/utility.service';
 import { LoginComponent } from './login.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginService } from './login.service';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoginService } from './login.service';
 
 const routes: Routes = [
     {
@@ -26,14 +27,15 @@ const routes: Routes = [
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatCardModule
     ],
     declarations: [
         LoginComponent
     ],
     providers: [
-        LoginService,
-        UtilityService
+        UtilityService,
+        LoginService
     ],
     exports: [
         LoginComponent

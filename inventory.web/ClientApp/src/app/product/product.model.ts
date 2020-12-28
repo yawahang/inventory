@@ -1,6 +1,11 @@
 export interface MvProduct {
-    productId: number;
-    name: string;
-    rate: number;
-    quantityStock: number;
+    ProductId: number;
+    Product: string;
+    Description: string;
+    Location: string;
+    Company: string;
+    Status: string;
+    Stock: number;
+    Price: number;
+    StatusListItemId: number;
 }

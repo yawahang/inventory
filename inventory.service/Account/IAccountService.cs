@@ -6,10 +6,10 @@ namespace inventory.service.Account
     public interface IAccountService
     {
         /// <summary>
-        /// User Login
+        /// Get User
         /// </summary>
         /// <param name="Json">{"Username": "staff@admin.com","Password": "admin@123"}</param>
-        /// <returns>User object</returns>
+        /// <returns>User Detail</returns>
         Task<MvResponse<MvUser>> Login(string json);
     }
 }

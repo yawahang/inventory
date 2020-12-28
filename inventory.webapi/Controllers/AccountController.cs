@@ -68,7 +68,7 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpPost, Authorize]
-        public void LogOut()
+        public void Logout()
         {
 
         }

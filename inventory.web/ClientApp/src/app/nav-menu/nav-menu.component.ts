@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { UtilityService } from 'src/core/services/utility.service';
-import { SessionService } from 'src/core/services/session.service';
+import { AuthService } from 'src/core/services/auth.service';
+import { WebApiService } from 'src/core/services/web-api.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,18 +14,19 @@ export class NavMenuComponent implements OnInit {
   navigationList: MvNavigation[];
 
   constructor(
-    private ses: SessionService,
-    private router: Router
+    public asr: AuthService,
+    private router: Router,
+    private api: WebApiService
   ) {
 
   }
   ngOnInit(): void {
 
-    this.ses.authenticated.subscribe((valid) => {
+    this.asr.authenticated.subscribe((valid) => {
 
       if (valid) {
 
-        this.navigationList = this.ses.getTokenValueByKey('Navigation') || [];
+        this.navigationList = this.asr.getTokenValueByKey('Navigation') || [];
       }
     });
   }
@@ -43,6 +44,21 @@ export class NavMenuComponent implements OnInit {
   login() {
 
     this.router.navigate(['/login']);
+  }
+
+  logout() {
+
+    const ret = this.api.post('Account/Logout');
+
+    localStorage.clear();
+    sessionStorage.clear();
+
+    this.ngxCache.clearCache();
+    this.authenticated.next(false);
+
+    window.history.replaceState({}, 'login', '/login/');
+    window.location.href = `${environment.webUrl}login/`;
+    return ret;
   }
 }
 

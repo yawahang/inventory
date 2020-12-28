@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MvLogin } from './login.model';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { SessionService } from 'src/core/services/session.service';
+import { AuthService } from 'src/core/services/auth.service';
 
 @Component({
   selector: 'login',
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     public fb: FormBuilder,
     public ls: LoginService,
-    private ses: SessionService,
+    private asr: AuthService,
     private router: Router
   ) {
     this._unsubscribeAll = new Subject();
@@ -52,23 +52,26 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
           this.token = response['token'];
 
-          this.ses.setToken(this.token);
-          this.token = this.ses.getTokenValueByKey('All') || {};
+          this.asr.setToken(this.token);
+          this.token = this.asr.getTokenValueByKey('All') || {};
 
           if (this.token?.RedirectUrl) {
 
-            this.ses.authenticated.next(true);
+            this.asr.isAuthenticated = true;
+            this.asr.authenticated.next(true);
             this.router.navigate([this.token?.RedirectUrl], {
               replaceUrl: true
             });
           } else {
 
-            this.ses.authenticated.next(false);
+            this.asr.isAuthenticated = false;
+            this.asr.authenticated.next(false);
             this.errorMessage = 'Invalid Login';
           }
         } else {
 
-          this.ses.authenticated.next(false);
+          this.asr.isAuthenticated = false;
+          this.asr.authenticated.next(false);
           this.errorMessage = 'Invalid Username or Password';
         }
       });

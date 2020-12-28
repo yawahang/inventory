@@ -11,17 +11,16 @@ export class ProductService {
 
   addProduct(json: any): Observable<any> {
 
-    return this.api.get('Account/AddProduct', { json: JSON.stringify(json) });
+    return this.api.post('Product/Insert', json);
   }
 
   updateProduct(json: any): Observable<any> {
 
-    return this.api.get('Account/UpdateProduct', { json: JSON.stringify(json) });
+    return this.api.post('Product/Update', json);
   }
 
   getProduct(): Observable<any> {
 
-    return this.api.get('Account/Product');
+    return this.api.get('Product/Product');
   }
-
 }
