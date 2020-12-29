@@ -18,7 +18,7 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Product(string json)
+        public async Task<IActionResult> Product(MvGetOptions json)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert([Required] string json)
+        public async Task<IActionResult> Insert([Required] MvPostOptions<MvProduct> json)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update([Required] string json)
+        public async Task<IActionResult> Update([Required] MvPostOptions<MvProduct> json)
         {
             try
             {

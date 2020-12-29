@@ -26,11 +26,11 @@ namespace inventory.webapi.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody][Required] MvLogin json)
+        public async Task<IActionResult> Login([FromBody][Required] MvLoginParam json)
         {
             try
             {
-                var response = await _asr.Login(JsonConvert.SerializeObject(json));
+                var response = await _asr.Login(json);
 
                 if (response.Type == "Error")
                 {
@@ -40,7 +40,7 @@ namespace inventory.webapi.Controllers
                 {
                     var claims = new[]
                     {
-                            new Claim("data", JsonConvert.SerializeObject(response.Data))
+                            new Claim("data", JsonConvert.SerializeObject(response.Data[0]))
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["ApiKey"]));

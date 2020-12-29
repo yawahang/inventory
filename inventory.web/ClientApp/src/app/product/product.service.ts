@@ -1,7 +1,7 @@
-import { WebApiService } from 'src/core/services/web-api.service';
+import { WebApiService } from 'src/core/service/web-api.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-
+import { MvGetOptions, MvGetPost } from 'src/core/model/base.model';
 @Injectable()
 export class ProductService {
 
@@ -9,18 +9,19 @@ export class ProductService {
 
   }
 
-  addProduct(json: any): Observable<any> {
+  getProduct(param?: MvGetPost): Observable<any> {
 
-    return this.api.post('Product/Insert', json);
+    return this.api.get('Product/Product', param);
   }
 
-  updateProduct(json: any): Observable<any> {
+  addProduct(param: MvGetPost): Observable<any> {
 
-    return this.api.post('Product/Update', json);
+    return this.api.post('Product/Insert', param);
   }
 
-  getProduct(): Observable<any> {
+  updateProduct(param: MvGetPost): Observable<any> {
 
-    return this.api.get('Product/Product');
+    return this.api.post('Product/Update', param);
   }
+
 }

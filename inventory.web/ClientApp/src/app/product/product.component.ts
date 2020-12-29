@@ -1,20 +1,24 @@
-import { UtilityService } from './../../core/services/utility.service';
+import { UtilityService } from '../../core/service/utility.service';
 import { ProductService } from './product.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MvProduct } from './product.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ProductFormComponent } from './product-form/product-form.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
 
-  displayedColumns: string[];
+  private _unsubscribeAll: Subject<any>;
+
+  displayedColumns: string[] = ['productId', 'product', 'description', 'price', 'stock', 'company', 'status'];
   dataSource: MatTableDataSource<MvProduct>;
   gridData: MvProduct[] = [];
   selectedProduct: MvProduct = <MvProduct>{};
@@ -23,22 +27,21 @@ export class ProductComponent implements OnInit {
   constructor(private ps: ProductService,
     public dialog: MatDialog,
     private us: UtilityService) {
-
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
 
-    this.displayedColumns = ['productId', 'name', 'rate', 'quantityStock'];
     this.getProducts();
   }
 
   getProducts() {
 
-    this.ps.getProduct().subscribe((result: any) => {
+    this.ps.getProduct({}).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
 
-      if (result && result.data) {
+      if (response && response?.data) {
 
-        this.gridData = result.data;
+        this.gridData = response?.data;
         this.dataSource = new MatTableDataSource<MvProduct>(this.gridData);
       } else {
 
@@ -64,49 +67,34 @@ export class ProductComponent implements OnInit {
 
     if (action === 'Edit' && !this.selection.hasValue()) {
 
-      this.us.openSnackBar('Please Select A Row to Edit Product!', 'warning');
+      this.us.openSnackBar('Please select a row to edit product', 'info');
       return;
     }
 
     const dialogRef = this.dialog.open(ProductFormComponent, {
-      width: '250px',
-      data: { data: this.selectedProduct, action: action }
+      width: '300px',
+      data: { data: { ...this.selectedProduct }, action: action }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(response => {
 
-      if (result) {
+      if (response) {
 
-        this.selectedProduct = result;
-        // save to server
+        if (response?.error) {
+          return;
+        }
+
+        this.selectedProduct = response;
 
         if (action === 'Edit') {
 
-          // update in server database
+          this.us.swapArrayObject(response, this.gridData, 'productId');
+        } else {
 
-          // modify grid data
-          for (const index in this.gridData) {
-
-            if (this.gridData[index].ProductId === this.selectedProduct.ProductId) {
-
-              this.gridData[index] = { ...this.selectedProduct };
-              this.dataSource = new MatTableDataSource<MvProduct>(this.gridData);
-              break;
-            }
-          }
-        } else { // Add
-
-          // save to server database
-
-          // get response from server and append to existing grid
-          this.gridData.unshift({ ...this.selectedProduct });
-          this.dataSource = new MatTableDataSource<MvProduct>(this.gridData);
+          this.gridData.unshift(response);
         }
 
-        this.us.openSnackBar('Product Added Sucessfully', 'success');
-      } else {
-
-        this.us.openSnackBar('Action Cancelled', 'warning');
+        this.dataSource = new MatTableDataSource<MvProduct>(this.gridData);
       }
     });
   }
@@ -115,5 +103,11 @@ export class ProductComponent implements OnInit {
 
     this.selectedProduct = { ...row };
     this.selection.toggle(row);
+  }
+
+  ngOnDestroy() {
+
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 }

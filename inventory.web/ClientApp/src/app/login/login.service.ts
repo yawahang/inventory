@@ -1,6 +1,7 @@
+import { MvGetPost } from './../../core/model/base.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { WebApiService } from 'src/core/services/web-api.service';
+import { WebApiService } from 'src/core/service/web-api.service';
 
 @Injectable()
 export class LoginService {
@@ -8,9 +9,9 @@ export class LoginService {
   constructor(private api: WebApiService) {
   }
 
-  login(json: any): Observable<any> {
+  login(param: MvGetPost): Observable<any> {
 
-    return this.api.post('Account/Login', json);
+    return this.api.post('Account/Login', param);
   }
 
 }

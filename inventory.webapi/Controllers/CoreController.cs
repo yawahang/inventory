@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using inventory.model;
 using inventory.service.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListItem(string json)
+        public async Task<IActionResult> ListItem(MvGetOptions json)
         {
             try
             {

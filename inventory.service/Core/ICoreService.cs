@@ -1,4 +1,5 @@
 ﻿using inventory.model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace inventory.service.Core
@@ -8,8 +9,7 @@ namespace inventory.service.Core
         /// <summary>
         /// Get ListItem
         /// </summary>
-        /// <param name="Json">{"Category": "ProductStatus"}</param>
         /// <returns>List of ListItems</returns>
-        Task<MvResponse<MvListItem>> ListItem(string json);
+        Task<MvResponse<List<MvListItem>>> ListItem(MvGetOptions json);
     }
 }

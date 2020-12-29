@@ -12,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -40,16 +42,16 @@ namespace inventory.webapi
 
             var allowOrigin = Configuration.GetSection("AllowOrigin").Get<List<string>>(); // configure Chors for endpoint
             services.AddCors(options =>
-            {
-                options.AddPolicy(name: "AllowOrigin",
-                    builder =>
-                    {
-                        builder.WithOrigins(allowOrigin.ToArray())
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                       .AllowCredentials();
-                    });
-            });
+                {
+                    options.AddPolicy(name: "AllowOrigin",
+                        builder =>
+                        {
+                            builder.WithOrigins(allowOrigin.ToArray())
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                           .AllowCredentials();
+                        });
+                });
 
             services.AddControllers();
 

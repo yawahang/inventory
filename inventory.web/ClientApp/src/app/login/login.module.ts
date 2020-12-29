@@ -1,5 +1,6 @@
+import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { UtilityService } from './../../core/services/utility.service';
+import { UtilityService } from '../../core/service/utility.service';
 import { LoginComponent } from './login.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -28,7 +29,8 @@ const routes: Routes = [
         MatInputModule,
         MatButtonModule,
         MatSnackBarModule,
-        MatCardModule
+        MatCardModule,
+        MatIconModule
     ],
     declarations: [
         LoginComponent

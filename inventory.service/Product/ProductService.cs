@@ -16,15 +16,15 @@ namespace inventory.service.Product
             _ds = ds;
         }
 
-        public async Task<MvResponse<List<MvProduct>>> Product(string json)
+        public async Task<MvResponse<List<MvProduct>>> Product(MvGetOptions json)
         {
             var param = new DynamicParameters();
-            param.Add("Json", json, DbType.String);
+            param.Add("Json", JsonConvert.SerializeObject(json), DbType.String);
             var result = await _ds.Get<string>("dbo.SpProductSel", param);
             return JsonConvert.DeserializeObject<MvResponse<List<MvProduct>>>(result);
         }
 
-        public async Task<MvResponse<MvProduct>> Insert(string json)
+        public async Task<MvResponse<MvProduct>> Insert(MvPostOptions<MvProduct> json)
         {
             var param = new DynamicParameters();
             param.Add("Json", json, DbType.String);
@@ -32,7 +32,7 @@ namespace inventory.service.Product
             return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
         }
 
-        public async Task<MvResponse<MvProduct>> Update(string json)
+        public async Task<MvResponse<MvProduct>> Update(MvPostOptions<MvProduct> json)
         {
             var param = new DynamicParameters();
             param.Add("Json", json, DbType.String);

@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/core/services/auth.service';
-import { WebApiService } from 'src/core/services/web-api.service';
+import { AuthService } from 'src/core/service/auth.service';
+import { WebApiService } from 'src/core/service/web-api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav-menu',
@@ -14,7 +15,7 @@ export class NavMenuComponent implements OnInit {
   navigationList: MvNavigation[];
 
   constructor(
-    public asr: AuthService,
+    public auth: AuthService,
     private router: Router,
     private api: WebApiService
   ) {
@@ -22,11 +23,11 @@ export class NavMenuComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.asr.authenticated.subscribe((valid) => {
+    this.auth.authenticated.subscribe((valid) => {
 
       if (valid) {
 
-        this.navigationList = this.asr.getTokenValueByKey('Navigation') || [];
+        this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
       }
     });
   }
@@ -48,13 +49,13 @@ export class NavMenuComponent implements OnInit {
 
   logout() {
 
-    const ret = this.api.post('Account/Logout');
+    const ret = this.api.post('Account/Logout', {});
 
     localStorage.clear();
     sessionStorage.clear();
 
-    this.ngxCache.clearCache();
-    this.authenticated.next(false);
+    // this.ngxCache.clearCache();
+    this.auth.authenticated.next(false);
 
     window.history.replaceState({}, 'login', '/login/');
     window.location.href = `${environment.webUrl}login/`;

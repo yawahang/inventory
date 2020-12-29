@@ -1,18 +1,20 @@
 <div class="inner-wrap">
+  <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
+    <div>
+      <h3>Dashboard</h3>
+      <mat-icon>dashboard</mat-icon>
+    </div>
+  </div>
 
-  <h3>Dashboard</h3>
-  <br />
-  <br />
-  <div fxLayout="row wrap" fxLayoutGap="12px" fxFill fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
-    fxLayoutAlign="space-between center">
+  <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
     <div fxFlex="25%" class="p-4">
-      <mat-card>
+      <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-title>Today</mat-card-title>
           <mat-card-subtitle>Stock</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <div style="margin-left:40%;">
+          <div class="m-l-40">
             <h1>8</h1>
           </div>
         </mat-card-content>
@@ -20,13 +22,13 @@
     </div>
 
     <div fxFlex="25%" class="p-4">
-      <mat-card>
+      <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-title>Weekly</mat-card-title>
           <mat-card-subtitle>Stock</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <div style="margin-left:40%;">
+          <div class="m-l-40">
             <h1>25</h1>
           </div>
         </mat-card-content>
@@ -34,13 +36,13 @@
     </div>
 
     <div fxFlex="25%" class="p-4">
-      <mat-card>
+      <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-title>Monthly</mat-card-title>
           <mat-card-subtitle>Stock</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <div style="margin-left:40%;">
+          <div class="m-l-40">
             <h1>60</h1>
           </div>
         </mat-card-content>
@@ -48,13 +50,13 @@
     </div>
 
     <div fxFlex="25%" class="p-4">
-      <mat-card>
+      <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-title>Yearly</mat-card-title>
           <mat-card-subtitle>Stock</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
-          <div style="margin-left:40%;">
+          <div class="m-l-40">
             <h1>100</h1>
           </div>
         </mat-card-content>
@@ -62,15 +64,14 @@
     </div>
   </div>
 
-  <div fxLayout="row wrap" fxLayoutGap="12px" fxFill fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
-    fxLayoutAlign="space-between center">
+  <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
     <div fxFlex="50%" class="p-4">
-      <mat-card>
+      <mat-card class="d-chart">
         <mat-card-header>
           <mat-card-title>Stock Trend</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div style="margin-left:40%;">
+          <div>
             <kendo-chart>
               <kendo-chart-title text="Units sold"></kendo-chart-title>
               <kendo-chart-category-axis>
@@ -93,12 +94,12 @@
     </div>
 
     <div fxFlex="50%" class="p-4">
-      <mat-card>
+      <mat-card class="d-chart">
         <mat-card-header>
           <mat-card-title>Stock Dist By Status</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div style="margin-left:40%;">
+          <div>
             <kendo-chart>
               <kendo-chart-series>
                 <kendo-chart-series-item type="donut" [data]="data" categoryField="kind" field="share">

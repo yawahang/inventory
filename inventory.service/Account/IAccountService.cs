@@ -1,4 +1,5 @@
 ﻿using inventory.model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace inventory.service.Account
@@ -8,8 +9,7 @@ namespace inventory.service.Account
         /// <summary>
         /// Get User
         /// </summary>
-        /// <param name="Json">{"Username": "staff@admin.com","Password": "admin@123"}</param>
         /// <returns>User Detail</returns>
-        Task<MvResponse<MvUser>> Login(string json);
+        Task<MvResponse<List<MvUser>>> Login(MvLoginParam json);
     }
 }

@@ -5,3 +5,27 @@ mat-card-title{
 mat-card-subtitle{
     margin-left:0px;font-size:small;
 }
+
+mat-card{
+    background: #fcf5f5;
+}
+
+kendo-chart{
+    width: 100%;
+    height: 100%;
+    margin: 5px;
+}
+ 
+.d-tile{
+    height: 150px;
+    width: 25%;
+}
+ 
+.d-chart{
+    height: 500px;
+    width: 50%;
+}
+
+.inner-wrap{
+    padding: 10px;
+}

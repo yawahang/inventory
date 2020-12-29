@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace inventory.model
 {
-    public class MvLogin
+    public class MvLoginParam
     {
         [Required]
         public string Username { get; set; }

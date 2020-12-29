@@ -1,11 +1,11 @@
-import { UtilityService } from './../../core/services/utility.service';
+import { UtilityService } from '../../core/service/utility.service';
 import { LoginService } from './login.service';
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MvLogin } from './login.model';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { AuthService } from 'src/core/services/auth.service';
+import { AuthService } from 'src/core/service/auth.service';
 
 @Component({
   selector: 'login',
@@ -20,11 +20,12 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   fmLogin: FormGroup;
   errorMessage: any;
   mvLogin: MvLogin = <MvLogin>{};
+  hide = true;
 
   constructor(
     public fb: FormBuilder,
     public ls: LoginService,
-    private asr: AuthService,
+    private auth: AuthService,
     private router: Router
   ) {
     this._unsubscribeAll = new Subject();
@@ -46,32 +47,36 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
       this.mvLogin.Username = this.fmLogin.get('Username').value.trim();
       this.mvLogin.Password = this.fmLogin.get('Password').value.trim();
 
-      this.ls.login(this.mvLogin).subscribe((response: any) => {
+      const param = {
+        data: { ...this.mvLogin }
+      };
+
+      this.ls.login(param).subscribe((response: any) => {
 
         if (response && response['token']) {
 
           this.token = response['token'];
 
-          this.asr.setToken(this.token);
-          this.token = this.asr.getTokenValueByKey('All') || {};
+          this.auth.setToken(this.token);
+          this.token = this.auth.getTokenValueByKey('All') || {};
 
           if (this.token?.RedirectUrl) {
 
-            this.asr.isAuthenticated = true;
-            this.asr.authenticated.next(true);
+            this.auth.isAuthenticated = true;
+            this.auth.authenticated.next(true);
             this.router.navigate([this.token?.RedirectUrl], {
               replaceUrl: true
             });
           } else {
 
-            this.asr.isAuthenticated = false;
-            this.asr.authenticated.next(false);
+            this.auth.isAuthenticated = false;
+            this.auth.authenticated.next(false);
             this.errorMessage = 'Invalid Login';
           }
         } else {
 
-          this.asr.isAuthenticated = false;
-          this.asr.authenticated.next(false);
+          this.auth.isAuthenticated = false;
+          this.auth.authenticated.next(false);
           this.errorMessage = 'Invalid Username or Password';
         }
       });

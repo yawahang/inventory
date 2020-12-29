@@ -13,8 +13,17 @@ code {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
 .overflow-y {
   overflow-y: scroll;
+}
+ 
+.m-l-26{
+  padding-right: 26px;;
+}
+
+.m-l-40{
+  margin-left:40%;
 }
 
 /* width */
@@ -35,4 +44,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
+}
+
+.warning{
+  background-color: orange !important;
+  color: #fff !important;
+}
+
+.success{
+  background-color: green !important;
+  color: #fff !important;
+}
+
+.mat-card-header-text{
+  margin: 2px !important;
 }

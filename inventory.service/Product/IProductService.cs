@@ -10,20 +10,17 @@ namespace inventory.service.Product
         /// <summary>
         /// Get Product
         /// </summary>
-        /// <param name="Json">{}</param>
         /// <returns>List of MvProduct</returns>
-        Task<MvResponse<List<MvProduct>>> Product(string json);
+        Task<MvResponse<List<MvProduct>>> Product(MvGetOptions json);
         /// <summary>
         /// Insert Product
         /// </summary>
-        /// <param name="Json">{"ProductId":0,"Product":"Laptop","Description":"Laptop","Location":"Laptop","Stock":12,"StatusListItemId":1,"Price":10000,"Company":"Dell"}</param>
-        /// <returns>Product Detail</returns>
-        Task<MvResponse<MvProduct>> Insert(string json);
+        /// <returns>List of Product Detail</returns>
+        Task<MvResponse<MvProduct>> Insert(MvPostOptions<MvProduct> json);
         /// <summary>
         /// Update Product
         /// </summary>
-        /// <param name="Json">{"ProductId":0,"Product":"Laptop","Description":"Laptop","Location":"Laptop","Stock":12,"StatusListItemId":1,"Price":10000,"Company":"Dell"}</param>
-        /// <returns>Product Detail</returns>
-        Task<MvResponse<MvProduct>> Update(string json);
+        /// <returns>List of Product Detail</returns>
+        Task<MvResponse<MvProduct>> Update(MvPostOptions<MvProduct> json);
     }
 }

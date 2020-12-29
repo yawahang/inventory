@@ -12,9 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { UtilityService } from 'src/core/services/utility.service';
+import { UtilityService } from 'src/core/service/utility.service';
 import { MatSelectModule } from '@angular/material/select';
-import { CoreService } from 'src/core/services/core.service';
+import { CoreService } from 'src/core/service/core.service';
 
 const routes: Routes = [
   {

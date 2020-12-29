@@ -6,17 +6,17 @@
       <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px">
         <mat-form-field fxFlex>
           <input matInput type="text" placeholder="Product" formControlName="Product" required
-            [(ngModel)]="selectedProduct.Product">
+            [(ngModel)]="selectedProduct.product">
         </mat-form-field>
 
         <mat-form-field fxFlex>
           <input matInput type="text" placeholder="Description" formControlName="Description" required
-            [(ngModel)]="selectedProduct.Description">
+            [(ngModel)]="selectedProduct.description">
         </mat-form-field>
 
         <mat-form-field fxFlex>
           <input matInput type="number" placeholder="Price" formControlName="Price" required
-            [(ngModel)]="selectedProduct.Price">
+            [(ngModel)]="selectedProduct.price">
         </mat-form-field>
       </div>
 
@@ -24,19 +24,19 @@
 
         <mat-form-field fxFlex>
           <input matInput type="number" placeholder="Stock" formControlName="Stock" required
-            [(ngModel)]="selectedProduct.Stock">
+            [(ngModel)]="selectedProduct.stock">
         </mat-form-field>
 
         <mat-form-field fxFlex>
           <input matInput type="text" placeholder="Company" formControlName="Company" required
-            [(ngModel)]="selectedProduct.Price">
+            [(ngModel)]="selectedProduct.company">
         </mat-form-field>
 
         <mat-form-field fxFlex>
           <mat-select placeholder="Status" formControlName="StatusListItemId" required
-            [(ngModel)]="selectedProduct.StatusListItemId">
+            [(ngModel)]="selectedProduct.statusListItemId">
             <mat-option *ngFor="let dt of statusList;" [value]="dt.listItemId">
-              {{ dt.ListItem }}
+              {{ dt.listItem }}
             </mat-option>
           </mat-select>
         </mat-form-field>

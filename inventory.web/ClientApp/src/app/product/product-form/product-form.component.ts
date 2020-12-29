@@ -1,4 +1,5 @@
-import { CoreService } from 'src/core/services/core.service';
+import { ProductService } from './../product.service';
+import { CoreService } from 'src/core/service/core.service';
 import { AfterViewInit, Inject, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,6 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MvProduct } from '../product.model';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UtilityService } from 'src/core/service/utility.service';
 
 @Component({
   selector: 'app-product-form',
@@ -25,13 +27,15 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
     public dialogRef: MatDialogRef<ProductFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public fb: FormBuilder,
-    public cs: CoreService) {
+    public cs: CoreService,
+    public ps: ProductService,
+    private us: UtilityService) {
 
     this._unsubscribeAll = new Subject();
 
     dialogRef.disableClose = true;
-    this.action = data.action;
-    this.selectedProduct = data.data || {};
+    this.action = data?.action;
+    this.selectedProduct = data?.data || {};
   }
 
   ngOnInit() {
@@ -50,27 +54,53 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   cancelClick() {
 
+    this.us.openSnackBar('Action Cancelled', 'warning');
     this.dialogRef.close();
   }
 
   submitForm() {
 
-    this.dialogRef.close(this.selectedProduct);
+    if (this.productForm.valid) {
+
+      const param = {
+        data: { ...this.selectedProduct },
+        pagination: {},
+        filter: []
+      };
+
+      this.ps.addProduct(param).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+
+        if (response && response?.data) {
+
+          this.dialogRef.close(response?.data);
+          this.us.openSnackBar('Product added', 'success');
+        } else {
+
+          this.dialogRef.close({ error: true });
+          this.us.openSnackBar('Failed to add product', 'error');
+        }
+      });
+    }
   }
 
   getStatusList() {
 
-    this.cs.getListItem({ Category: 'ProductStatus' })
-      .pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+    const param = {
+      data: { Category: 'ProductStatus' },
+      pagination: {},
+      filter: []
+    };
 
-        if (response) {
+    this.cs.getListItem(param).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
 
-          this.statusList = response;
-        } else {
+      if (response) {
 
-          this.statusList = [];
-        }
-      });
+        this.statusList = response;
+      } else {
+
+        this.statusList = [];
+      }
+    });
   }
 
   ngAfterViewInit() {
