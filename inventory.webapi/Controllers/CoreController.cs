@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using inventory.model;
 using inventory.service.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,14 +14,14 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ListItem(MvGetOptions json)
+        public async Task<IActionResult> ListItem(string json)
         {
             try
             {
                 var response = await _cs.ListItem(json);
                 if (response.Type == "Error")
                 {
-                    return BadRequest(response.Text);
+                    return Ok(response.Text);
                 }
                 else
                 {

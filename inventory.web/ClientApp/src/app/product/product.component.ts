@@ -18,7 +18,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any>;
 
-  displayedColumns: string[] = ['productId', 'product', 'description', 'price', 'stock', 'company', 'status'];
+  displayedColumns: string[] = ['productId', 'product', 'description', 'price', 'stock', 'company', 'brand', 'status', 'createdBy'];
   dataSource: MatTableDataSource<MvProduct>;
   gridData: MvProduct[] = [];
   selectedProduct: MvProduct = <MvProduct>{};
@@ -39,9 +39,9 @@ export class ProductComponent implements OnInit, OnDestroy {
 
     this.ps.getProduct({}).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
 
-      if (response && response?.data) {
+      if (response) {
 
-        this.gridData = response?.data;
+        this.gridData = response;
         this.dataSource = new MatTableDataSource<MvProduct>(this.gridData);
       } else {
 
@@ -72,7 +72,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     }
 
     const dialogRef = this.dialog.open(ProductFormComponent, {
-      width: '300px',
       data: { data: { ...this.selectedProduct }, action: action }
     });
 

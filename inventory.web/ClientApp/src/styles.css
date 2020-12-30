@@ -56,6 +56,45 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: #fff !important;
 }
 
+.error{
+  background-color: red !important;
+  color: #fff !important;
+}
+
 .mat-card-header-text{
   margin: 2px !important;
+}
+
+/* Mat Tabble */
+table {
+  width: 100%;
+}
+
+.mat-row.hovered {
+  background: #eee;
+}
+
+.mat-row.highlighted {
+  background: #cfd4e3;
+  color:#fff !important;
+}
+  
+/* Mat Tabble */
+
+.breadcrumb {
+  color:#555;
+  margin: 5px;
+}
+
+.action-button{
+  margin: 8px 5px 15px 5px !important
+}
+
+.action-button-wap{
+  margin: 2px !important;
+  background: #f6f6f6 !important;
+}
+
+.content-wrapper{
+  padding: 10px !important;
 }

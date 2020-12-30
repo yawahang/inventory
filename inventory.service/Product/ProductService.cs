@@ -1,9 +1,7 @@
-﻿using Dapper;
-using inventory.model;
+﻿using inventory.model;
 using inventory.service.Data;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Data;
+using System;
 using System.Threading.Tasks;
 
 namespace inventory.service.Product
@@ -16,28 +14,43 @@ namespace inventory.service.Product
             _ds = ds;
         }
 
-        public async Task<MvResponse<List<MvProduct>>> Product(MvGetOptions json)
+        public async Task<MvResponse<MvProduct>> Product(string json)
         {
-            var param = new DynamicParameters();
-            param.Add("Json", JsonConvert.SerializeObject(json), DbType.String);
-            var result = await _ds.Get<string>("dbo.SpProductSel", param);
-            return JsonConvert.DeserializeObject<MvResponse<List<MvProduct>>>(result);
+            try
+            {
+                var result = await _ds.Get("dbo.SpProductSel", json);
+                return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public async Task<MvResponse<MvProduct>> Insert(MvPostOptions<MvProduct> json)
+        public async Task<MvResponse<MvProduct>> Insert(string json)
         {
-            var param = new DynamicParameters();
-            param.Add("Json", json, DbType.String);
-            var result = await _ds.Get<string>("dbo.SpProductIns", param);
-            return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
+            try
+            {
+                var result = await _ds.Insert("dbo.SpProductIns", json);
+                return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public async Task<MvResponse<MvProduct>> Update(MvPostOptions<MvProduct> json)
+        public async Task<MvResponse<MvProduct>> Update(string json)
         {
-            var param = new DynamicParameters();
-            param.Add("Json", json, DbType.String);
-            var result = await _ds.Get<string>("dbo.SpProductUpd", param);
-            return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
+            try
+            {
+                var result = await _ds.Update("dbo.SpProductUpd", json);
+                return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

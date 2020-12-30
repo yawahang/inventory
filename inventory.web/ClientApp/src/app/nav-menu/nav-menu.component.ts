@@ -49,7 +49,7 @@ export class NavMenuComponent implements OnInit {
 
   logout() {
 
-    const ret = this.api.post('Account/Logout', {});
+    const ret = this.api.post('Account/Logout');
 
     localStorage.clear();
     sessionStorage.clear();

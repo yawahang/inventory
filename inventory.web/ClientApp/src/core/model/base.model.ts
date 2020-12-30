@@ -1,14 +1,11 @@
-export interface MvGetOptions {
-
-    pagination?: MvPagination;
-    filter?: MvFilter[];
-}
+import { HttpHeaders, HttpParams } from "@angular/common/http";
 
 export interface MvPagination {
     pageNumber?: number;
     pageSize?: number;
     totalRows?: number;
     sortBy?: string;
+    SortOrder?: string;
 }
 
 export interface MvFilter {
@@ -17,16 +14,23 @@ export interface MvFilter {
     operator?: string | 'equals';
 }
 
-export interface MvPostOptions<T> {
+// export interface MvPostOptions<T> {
+//     // (data?: T): void;
+//     data: T;
+//     pagination?: MvPagination;
+//     filter?: MvFilter[];
+// }
 
-    // (data?: T): void;
-    data: T;
-    pagination?: MvPagination;
-    filter?: MvFilter[];
-}
+// export interface MvGetPost {
+//     data: object;
+//     pagination?: MvPagination;
+//     filter?: MvFilter[];
+// }
 
-export interface MvGetPost {
-    data: object;
-    pagination?: MvPagination;
-    filter?: MvFilter[];
+export interface MvHttpOptions {
+    headers?: HttpHeaders | {
+        [header: string]: string | string[];
+    };
+    observe?: any;
+    params?: HttpParams | {};
 }

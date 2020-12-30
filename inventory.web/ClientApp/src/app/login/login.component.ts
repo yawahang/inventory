@@ -1,6 +1,6 @@
-import { UtilityService } from '../../core/service/utility.service';
+import { environment } from './../../environments/environment';
 import { LoginService } from './login.service';
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MvLogin } from './login.model';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { AuthService } from 'src/core/service/auth.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any>;
 
@@ -42,16 +42,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   login() {
 
     this.errorMessage = '';
+    this.fmLogin.updateValueAndValidity();
     if (this.fmLogin.valid) {
 
       this.mvLogin.Username = this.fmLogin.get('Username').value.trim();
       this.mvLogin.Password = this.fmLogin.get('Password').value.trim();
 
-      const param = {
-        data: { ...this.mvLogin }
-      };
-
-      this.ls.login(param).subscribe((response: any) => {
+      this.ls.login(this.mvLogin).subscribe((response: any) => {
 
         if (response && response['token']) {
 
@@ -60,18 +57,19 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
           this.auth.setToken(this.token);
           this.token = this.auth.getTokenValueByKey('All') || {};
 
+          this.auth.isAuthenticated = true;
+          this.auth.authenticated.next(true);
+
           if (this.token?.RedirectUrl) {
 
-            this.auth.isAuthenticated = true;
-            this.auth.authenticated.next(true);
             this.router.navigate([this.token?.RedirectUrl], {
               replaceUrl: true
             });
           } else {
 
-            this.auth.isAuthenticated = false;
-            this.auth.authenticated.next(false);
-            this.errorMessage = 'Invalid Login';
+            this.router.navigate([environment.redirectUrl], {
+              replaceUrl: true
+            });
           }
         } else {
 
@@ -84,11 +82,6 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.errorMessage = 'Invalid Form';
     }
-  }
-
-  ngAfterViewInit() {
-
-    this.fmLogin.updateValueAndValidity();
   }
 
   ngOnDestroy() {

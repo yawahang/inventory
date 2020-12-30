@@ -26,15 +26,15 @@ namespace inventory.webapi.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody][Required] MvLoginParam json)
+        public async Task<IActionResult> Login([FromBody][Required] MvPost json)
         {
             try
             {
-                var response = await _asr.Login(json);
+                var response = await _asr.Login(JsonConvert.SerializeObject(json.Json));
 
                 if (response.Type == "Error")
                 {
-                    return BadRequest(response.Text);
+                    return Ok(response.Text);
                 }
                 else
                 {

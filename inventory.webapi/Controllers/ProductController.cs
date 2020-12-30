@@ -18,14 +18,14 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Product(MvGetOptions json)
+        public async Task<IActionResult> Product(string json)
         {
             try
             {
                 var response = await _ps.Product(json);
                 if (response.Type == "Error")
                 {
-                    return BadRequest(response.Text);
+                    return Ok(response.Text);
                 }
                 else
                 {
@@ -39,14 +39,14 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert([Required] MvPostOptions<MvProduct> json)
+        public async Task<IActionResult> Insert([FromBody][Required] MvPost json)
         {
             try
             {
-                var response = await _ps.Insert(json);
+                var response = await _ps.Insert(JsonConvert.SerializeObject(json.Json));
                 if (response.Type == "Error")
                 {
-                    return BadRequest(response.Text);
+                    return Ok(response.Text);
                 }
                 else
                 {
@@ -60,14 +60,14 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update([Required] MvPostOptions<MvProduct> json)
+        public async Task<IActionResult> Update([FromBody][Required] MvPost json)
         {
             try
             {
-                var response = await _ps.Update(json);
+                var response = await _ps.Update(JsonConvert.SerializeObject(json.Json));
                 if (response.Type == "Error")
                 {
-                    return BadRequest(response.Text);
+                    return Ok(response.Text);
                 }
                 else
                 {

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { MvGetPost } from '../model/base.model';
 import { WebApiService } from './web-api.service';
 
 @Injectable({
@@ -12,7 +11,7 @@ export class CoreService {
 
   }
 
-  getListItem(param: MvGetPost): Observable<any> {
+  getListItem(param: object): Observable<any> {
 
     return this.api.get('Core/ListItem', param);
   }

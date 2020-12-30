@@ -43,14 +43,16 @@ namespace inventory.service.Data
 
         }
 
-        public async Task<T> Get<T>(string sp, DynamicParameters parms)
+        public async Task<string> Get(string sp, string json)
         {
             using var conn = await GetConnection();
             try
             {
-                var result = await conn.QueryFirstOrDefaultAsync<T>(sp, parms, commandType: CommandType.StoredProcedure);
+                var param = new DynamicParameters();
+                param.Add("Json", json, DbType.String);
+                var result = await conn.QueryFirstOrDefaultAsync<string>(sp, param, commandType: CommandType.StoredProcedure);
                 conn.Close();
-                return result;
+                return result ?? "{}";
             }
             catch (Exception ex)
             {
@@ -58,14 +60,16 @@ namespace inventory.service.Data
             }
         }
 
-        public async Task<T> Insert<T>(string sp, DynamicParameters parms)
+        public async Task<string> Insert(string sp, string json)
         {
             using var conn = await GetConnection();
             try
             {
-                var result = await conn.ExecuteScalarAsync<T>(sp, parms, commandType: CommandType.StoredProcedure);
+                var param = new DynamicParameters();
+                param.Add("Json", json, DbType.String, direction: ParameterDirection.InputOutput);
+                var result = await conn.ExecuteAsync(sp, param, commandType: CommandType.StoredProcedure);
                 conn.Close();
-                return result;
+                return param.Get<string>("Json") ?? "{}";
             }
             catch (Exception ex)
             {
@@ -73,14 +77,16 @@ namespace inventory.service.Data
             }
         }
 
-        public async Task<T> Update<T>(string sp, DynamicParameters parms)
+        public async Task<string> Update(string sp, string json)
         {
             using var conn = await GetConnection();
             try
             {
-                var result = await conn.ExecuteScalarAsync<T>(sp, parms, commandType: CommandType.StoredProcedure);
+                var param = new DynamicParameters();
+                param.Add("Json", json, DbType.String, direction: ParameterDirection.InputOutput);
+                var result = await conn.ExecuteAsync(sp, param, commandType: CommandType.StoredProcedure);
                 conn.Close();
-                return result;
+                return param.Get<string>("Json") ?? "{}";
             }
             catch (Exception ex)
             {

@@ -24,3 +24,50 @@ mat-icon{
 mat-icon:hover{
   color: rgb(98, 98, 216);
 }
+
+.nav-bar-wrp {
+  background: #018786 !important;
+  padding-bottom: 10px; 
+  margin-bottom: 0px !important;
+}
+
+.nav-bar-wrp > .container {
+
+  margin: 0;
+}
+
+.nav-bar-link {
+  color: #fff!important;
+}
+
+.nav-bar-link:hover {
+  color: rgb(167, 238, 53) !important;
+}
+
+.site-icon{
+  color: #fff !important;
+  margin-right: 5px !important;
+}
+
+.site-icon:hover{
+  color: rgb(167, 238, 53) !important;
+}
+.navbar-nav > .nav-item.link-active{
+  background-color: #0f9695 !important;
+}
+ 
+.navbar-nav > .nav-item:hover{
+  background-color: #0f9695 !important;
+}
+
+.navbar-nav > .nav-item > a{
+  color: #fff !important;
+}
+
+.logout-icon{
+  color: #fff !important;
+}
+
+.logout-icon:hover{
+  color: rgb(245, 16, 16) !important;
+}

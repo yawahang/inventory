@@ -5,7 +5,6 @@ namespace inventory.model
 {
     public class MvListItem
     {
-
         private string _stringValue = string.Empty;
         [Required]
         public int ListItemId { get; set; }
@@ -14,8 +13,8 @@ namespace inventory.model
         [AllowNull]
         public string Category
         {
-            get { return _stringValue; }
-            set { _stringValue = value ?? string.Empty; }
+            get => _stringValue;
+            set => _stringValue = value ?? _stringValue;
         }
     }
 }

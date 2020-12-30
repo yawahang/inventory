@@ -15,6 +15,8 @@ namespace inventory.model
     public class MvUser
     {
         [Required]
+        public string RedirectUrl { get; set; }
+        [Required]
         public int UserId { get; set; }
         [Required]
         public string Username { get; set; }
@@ -22,8 +24,6 @@ namespace inventory.model
         public List<MvRole> Role { get; set; }
         [Required]
         public List<MvNavigation> Navigation { get; set; }
-        [Required]
-        public string RedirectUrl { get; set; }
     }
 
     public class MvNavigation

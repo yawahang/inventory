@@ -1,6 +1,6 @@
 import { ProductService } from './../product.service';
 import { CoreService } from 'src/core/service/core.service';
-import { AfterViewInit, Inject, OnDestroy } from '@angular/core';
+import { Inject, OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ import { UtilityService } from 'src/core/service/utility.service';
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss']
 })
-export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProductFormComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any>;
 
@@ -42,10 +42,12 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.productForm = this.fb.group({
       Product: ['', Validators.required],
-      Description: ['', Validators.required],
+      Description: '',
       Price: ['', Validators.required],
       Stock: ['', Validators.required],
+      Location: ['', Validators.required],
       Company: ['', Validators.required],
+      Brand: ['', Validators.required],
       StatusListItemId: ['', Validators.required]
     });
 
@@ -60,38 +62,44 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   submitForm() {
 
+    this.productForm.updateValueAndValidity();
     if (this.productForm.valid) {
 
-      const param = {
-        data: { ...this.selectedProduct },
-        pagination: {},
-        filter: []
-      };
+      if (this.action === 'Add') {
 
-      this.ps.addProduct(param).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+        this.ps.addProduct(this.selectedProduct).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
 
-        if (response && response?.data) {
+          if (response) {
 
-          this.dialogRef.close(response?.data);
-          this.us.openSnackBar('Product added', 'success');
-        } else {
+            this.dialogRef.close(response);
+            this.us.openSnackBar('Product added', 'success');
+          } else {
 
-          this.dialogRef.close({ error: true });
-          this.us.openSnackBar('Failed to add product', 'error');
-        }
-      });
+            this.dialogRef.close({ error: true });
+            this.us.openSnackBar('Failed to add product', 'error');
+          }
+        });
+      } else {
+
+        this.ps.updateProduct(this.selectedProduct).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+
+          if (response) {
+
+            this.dialogRef.close(response);
+            this.us.openSnackBar('Product edited', 'success');
+          } else {
+
+            this.dialogRef.close({ error: true });
+            this.us.openSnackBar('Failed to edited product', 'error');
+          }
+        });
+      }
     }
   }
 
   getStatusList() {
 
-    const param = {
-      data: { Category: 'ProductStatus' },
-      pagination: {},
-      filter: []
-    };
-
-    this.cs.getListItem(param).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+    this.cs.getListItem({ Category: 'ProductStatus' }).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
 
       if (response) {
 
@@ -101,11 +109,6 @@ export class ProductFormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.statusList = [];
       }
     });
-  }
-
-  ngAfterViewInit() {
-
-    this.productForm.updateValueAndValidity();
   }
 
   ngOnDestroy() {

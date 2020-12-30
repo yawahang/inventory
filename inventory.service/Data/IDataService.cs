@@ -10,8 +10,8 @@ namespace inventory.service.Data
         int CurrentUserId { get; set; }
         string Role { get; set; }
         Task<IDbConnection> GetConnection();
-        Task<T> Get<T>(string sp, DynamicParameters parms);
-        Task<T> Insert<T>(string sp, DynamicParameters parms);
-        Task<T> Update<T>(string sp, DynamicParameters parms);
+        Task<string> Get(string sp, string json);
+        Task<string> Insert(string sp, string json);
+        Task<string> Update(string sp, string json);
     }
 }

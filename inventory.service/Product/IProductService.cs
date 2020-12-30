@@ -1,6 +1,5 @@
 ﻿
 using inventory.model;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace inventory.service.Product
@@ -11,16 +10,16 @@ namespace inventory.service.Product
         /// Get Product
         /// </summary>
         /// <returns>List of MvProduct</returns>
-        Task<MvResponse<List<MvProduct>>> Product(MvGetOptions json);
+        Task<MvResponse<MvProduct>> Product(string json);
         /// <summary>
         /// Insert Product
         /// </summary>
         /// <returns>List of Product Detail</returns>
-        Task<MvResponse<MvProduct>> Insert(MvPostOptions<MvProduct> json);
+        Task<MvResponse<MvProduct>> Insert(string json);
         /// <summary>
         /// Update Product
         /// </summary>
         /// <returns>List of Product Detail</returns>
-        Task<MvResponse<MvProduct>> Update(MvPostOptions<MvProduct> json);
+        Task<MvResponse<MvProduct>> Update(string json);
     }
 }

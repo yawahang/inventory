@@ -4,6 +4,7 @@ export interface MvProduct {
     description: string;
     location: string;
     company: string;
+    brand: string;
     status: string;
     stock: number;
     price: number;
