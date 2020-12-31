@@ -15,8 +15,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _unsubscribeAll: Subject<any>;
 
   box: any;
-  trendLine: any;
-  donutChart: any;
+  barLineCol: any;
+  pieDonut: any;
   dashboardConfig: any;
 
   constructor(private ds: DashboardService,
@@ -36,9 +36,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       if (response) {
 
-        this.box = response?.BoxTile || {};
-        this.trendLine = this.createChartDefination(response?.TrendChart || {}, 'line');
-        this.donutChart = this.createChartDefination(response?.DonutChart || {}, 'donut');
+        this.box = response?.Box || null;
+
+        if (response?.BarLineCol) {
+
+          this.barLineCol = this.createChartDefination(response?.BarLineCol, 'line');
+        }
+
+        if (response?.PieDonut) {
+
+          this.pieDonut = this.createChartDefination(response?.PieDonut, 'donut');
+        }
       } else {
 
         this.us.openSnackBar('Failed to load dashboard', 'error');
@@ -48,8 +56,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   createChartDefination(chart: any, type: string): any {
 
-    const xAxisDataType = chart.dataType[chart.XAxis] ? chart.dataType[chart.XAxis].toLowerCase() : null;
-    const yAxisDataType = chart.dataType[chart.YAxis] ? chart.dataType[chart.YAxis].toLowerCase() : null;
+    chart.Type = type;
+    const xAxisDataType = chart.DataType[chart.XAxis] ? chart.DataType[chart.XAxis].toLowerCase() : null;
+    const yAxisDataType = chart.DataType[chart.YAxis] ? chart.DataType[chart.YAxis].toLowerCase() : null;
 
     const seriesFormat: string = (this.dashboardConfig['format'] || {})[yAxisDataType] || null;
     const xAxisFormat: string = (this.dashboardConfig['format'] || {})[xAxisDataType] || null;
@@ -57,7 +66,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const data = chart.Data;
     const categories: any[] = [...new Set(data.map((dta: any) => dta[chart.XAxis].toString()))];
 
-    if (['line', 'column', 'bar'].includes(chart.Type)) {
+    if (['line', 'column', 'bar'].includes(type)) {
 
       const seriesData: any[] = chart.Series;
       chart.Data = {};
@@ -85,7 +94,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
       });
 
-    } else if (['pie', 'donut'].includes(chart.Type)) {
+    } else if (['pie', 'donut'].includes(type)) {
 
       chart.Data = chart.Data;
       chart.Format = seriesFormat;
@@ -130,13 +139,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             ['decimal', 'money'].includes(xAxisDataType) ? parseFloat(max.toString()) : max;
       }
 
-      if (['line', 'column'].includes(chart.Type)) {
+      if (['line', 'column'].includes(type)) {
 
         chart.CategoryAxis = { min: min, max: max, labels: { rotation: 'auto', format: xAxisFormat }, maxDivisions: maxAxisDivisions };
         chart.Pannable = { lock: 'y' };
         chart.Zoomable = { mousewheel: { lock: 'y' }, selection: { lock: 'y' } };
 
-      } else if (['bar'].includes(chart.Type)) {
+      } else if (['bar'].includes(type)) {
 
         chart.CategoryAxis = { min: min, max: max, labels: { rotation: 'auto', format: xAxisFormat }, maxDivisions: maxAxisDivisions };
         chart.Pannable = { lock: 'x' };

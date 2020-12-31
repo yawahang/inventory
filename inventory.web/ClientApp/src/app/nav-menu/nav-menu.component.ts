@@ -10,6 +10,7 @@ export class NavMenuComponent implements OnInit {
 
   isExpanded = false;
   navigationList: MvNavigation[];
+  isAuthenticated = false;
 
   constructor(public auth: AuthService
   ) {
@@ -17,13 +18,15 @@ export class NavMenuComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.auth.authenticated.subscribe((valid) => {
+    this.isAuthenticated = this.auth.getLocalStorage('isAuthenticated') || false;
 
-      if (valid) {
+    if (this.isAuthenticated) {
 
-        this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
-      }
-    });
+      this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
+    } else {
+
+      this.auth.redirectToLogin();
+    }
   }
 
   collapse() {
@@ -35,7 +38,6 @@ export class NavMenuComponent implements OnInit {
 
     this.isExpanded = !this.isExpanded;
   }
-
 }
 
 export interface MvNavigation {

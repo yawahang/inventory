@@ -7,6 +7,9 @@ export const environment = {
   apiUrl: 'http://localhost:8000/api/',
   webUrl: 'http://localhost:9000/',
   redirectUrl: '/dashboard',
+  secretKey: 'secretKey@123',
+  tokenKey: 'InvToken',
+  storageKey: 'Inventory',
   dashboardConfig: {
     maxAxisDivisions: {
       weeks: 7,

@@ -1,100 +1,93 @@
 <div class="site-content">
-  <span class="breadcrumb">Products</span>
+  <span class="breadcrumb">Dashboard
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </span>
 
-  <div fxLayout="row" fxLayoutGap="12px">
-    <div fxFlex>
-      <mat-card class="d-tile">
-        <mat-card-header>
-          <mat-card-subtitle>Available Stock</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="m-l-40">
-            <h1>{{box?.Available}}</h1>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+  <div *ngIf="box" class="dashboard-wrapper">
 
-    <div fxFlex>
-      <mat-card class="d-tile">
-        <mat-card-header>
-          <mat-card-subtitle>Out Of Stock</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="m-l-40">
-            <h1>{{box?.OutOfStock}}</h1>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <mat-card class="d-tile gradient-green-linear">
+      <mat-card-header>
+        <mat-card-subtitle>Available Stock</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="m-l-40">
+          <h1 class="color-white">{{box?.Available}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-    <div fxFlex>
-      <mat-card class="d-tile">
-        <mat-card-header>
-          <mat-card-subtitle>Damaged Stock</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="m-l-40">
-            <h1>{{box?.Damaged}}</h1>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <mat-card class="d-tile gradient-orange-linear">
+      <mat-card-header>
+        <mat-card-subtitle>Out Of Stock</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="m-l-40">
+          <h1 class="color-white">{{box?.OutOfStock}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-    <div fxFlex>
-      <mat-card class="d-tile">
-        <mat-card-header>
-          <mat-card-subtitle>Stock This Year</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="m-l-40">
-            <h1>{{box?.StockThisYear}}</h1>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <mat-card class="d-tile gradient-red-linear">
+      <mat-card-header>
+        <mat-card-subtitle>Damaged Stock</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="m-l-40">
+          <h1 class="color-white">{{box?.Damaged}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="d-tile gradient-blue-linear">
+      <mat-card-header>
+        <mat-card-subtitle>Stock This Year</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="m-l-40">
+          <h1 class="color-white">{{box?.StockThisYear}}</h1>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
   </div>
 
-  <div fxLayout="row" fxLayoutGap="12px">
-    <div fxFlex>
-      <mat-card class="d-chart">
-        <mat-card-header>
-          <mat-card-title>Top 5 Stock Trend This Month</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ng-container *ngTemplateOutlet="barLineCol; context: { $implicit: trendLine }">
-          </ng-container>
-        </mat-card-content>
-      </mat-card>
-    </div>
+  <div class="dashboard-wrapper">
+    <mat-card *ngIf="barLineCol" class="d-chart">
+      <mat-card-header>
+        <mat-card-title>Top 5 Stock Trend This Month</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngTemplateOutlet="barLineColChrt; context: { $implicit: barLineCol }">
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
 
-    <div fxFlex>
-      <mat-card class="d-chart">
-        <mat-card-header>
-          <mat-card-title>Top 5 Stock Dist By Status This Month</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <ng-container *ngTemplateOutlet="pieDonut; context: { $implicit: donutChart }">
-          </ng-container>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    <mat-card *ngIf="pieDonut" class="d-chart">
+      <mat-card-header>
+        <mat-card-title>Top 5 Stock Dist By Status This Month</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <ng-container *ngTemplateOutlet="pieDonutChrt; context: { $implicit: pieDonut }">
+        </ng-container>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
 
 <!-- Chart -->
-<ng-template #barLineCol let-chartDS>
-  <kendo-chart [categoryAxis]="chartDS.CategoryAxis" [pannable]="chartDS.Pannable" [zoomable]="chartDS.Zoomable">
+<ng-template #barLineColChrt let-barLineCol>
+  <kendo-chart [categoryAxis]="barLineCol.CategoryAxis" [pannable]="barLineCol.Pannable"
+    [zoomable]="barLineCol.Zoomable">
     <kendo-chart-series>
-      <kendo-chart-series-item [stack]="chartDS.Stack" [type]="chartDS.Type" [categoryField]="chartDS.YAxis"
-        *ngFor="let ss of chartDS.Data?.Series; let i=index;" [name]="ss.Name " [field]="chartDS.YAxis" [data]="ss.Data"
-        [style]="'smooth'">
+      <kendo-chart-series-item [stack]="barLineCol.Stack" [type]="barLineCol.Type" [categoryField]="barLineCol.YAxis"
+        *ngFor="let ss of barLineCol.Data?.Series; let i=index;" [name]="ss.Name " [field]="barLineCol.YAxis"
+        [data]="ss.Data" [style]="'smooth'">
 
-        <kendo-chart-series-item-labels *ngIf="!chartDS.Stack && chartDS.Type != 'line'" [format]="ss.Format"
+        <kendo-chart-series-item-labels *ngIf="!barLineCol.Stack && barLineCol.Type != 'line'" [format]="ss.Format"
           background="none" position="outsideEnd" [padding]="5" color="#fff">
         </kendo-chart-series-item-labels>
 
-        <kendo-chart-series-item-labels *ngIf="chartDS.Stack && chartDS.Type != 'line'" [format]="ss.Format"
+        <kendo-chart-series-item-labels *ngIf="barLineCol.Stack && barLineCol.Type != 'line'" [format]="ss.Format"
           background="none" position="top" [padding]="5" [margin]="{ top: getTop(i) }" color="#fff">
         </kendo-chart-series-item-labels>
 
@@ -108,12 +101,12 @@
   </kendo-chart>
 </ng-template>
 
-<ng-template #pieDonut let-chartDS>
-  <kendo-chart [categoryAxis]="chartDS.categoryAxis">
+<ng-template #pieDonutChrt let-pieDonut>
+  <kendo-chart [categoryAxis]="pieDonut.categoryAxis">
     <kendo-chart-series>
-      <kendo-chart-series-item [type]="chartDS.Type" [categoryField]="chartDS.XAxis" [name]="'Status'"
-        [field]="chartDS.YAxis" [data]="chartDS.Data">
-        <kendo-chart-series-item-labels [format]="chartDS.Format" color="#fff" background="none">
+      <kendo-chart-series-item [type]="pieDonut.Type" [categoryField]="pieDonut.XAxis" [name]="'Status'"
+        [field]="pieDonut.YAxis" [data]="pieDonut.Data">
+        <kendo-chart-series-item-labels [format]="pieDonut.Format" color="#fff" background="none">
         </kendo-chart-series-item-labels>
       </kendo-chart-series-item>
     </kendo-chart-series>

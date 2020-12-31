@@ -1,7 +1,9 @@
 ﻿using Dapper;
+using inventory.model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -13,7 +15,7 @@ namespace inventory.service.Data
         private readonly IConfiguration _configuration;
         private readonly string _connectionstring = "";
         public int CurrentUserId { get; set; }
-        public string Role { get; set; }
+        public List<MvRole> Role { get; set; }
 
         public DataService(IConfiguration configuration)
         {

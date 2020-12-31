@@ -53,16 +53,14 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (response && response['token']) {
 
           this.token = response['token'];
-
           this.auth.setToken(this.token);
-          this.token = this.auth.getTokenValueByKey('All') || {};
+          this.auth.setLocalStorage('isAuthenticated', true);
+          const redirectUrl = this.auth.getTokenValueByKey('RedirectUrl');
+          this.auth.subAuthenticated.next(true);
 
-          this.auth.isAuthenticated = true;
-          this.auth.authenticated.next(true);
+          if (redirectUrl) {
 
-          if (this.token?.RedirectUrl) {
-
-            this.router.navigate([this.token?.RedirectUrl], {
+            this.router.navigate([redirectUrl], {
               replaceUrl: true
             });
           } else {
@@ -73,8 +71,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           }
         } else {
 
-          this.auth.isAuthenticated = false;
-          this.auth.authenticated.next(false);
+          this.auth.subAuthenticated.next(false);
           this.errorMessage = 'Invalid Username or Password';
         }
       });

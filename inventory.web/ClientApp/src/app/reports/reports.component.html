@@ -1,9 +1,7 @@
 <div class="site-content">
-  <span class="breadcrumb">Products</span>
-  <div class="action-button-wap">
-    <button type="button" class="action-button" mat-raised-button (click)="addProduct()">Add</button>
-    <button type="button" class="action-button" mat-raised-button (click)="editProduct()">Edit</button>
-  </div>
+  <span class="breadcrumb">Report
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </span>
 
   <kendo-grid [data]="gridData" [pageSize]="state.take" [skip]="state.skip" [sort]="state.sort" [group]="state.group"
     [sortable]="{ mode: 'multiple' }" [pageable]="true" [groupable]="{ showFooter: true }" [resizable]="true"

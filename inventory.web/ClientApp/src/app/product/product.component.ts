@@ -80,10 +80,6 @@ export class ProductComponent implements OnInit, OnDestroy {
 
       if (response) {
 
-        if (response?.error) {
-          return;
-        }
-
         this.selectedProduct = response;
 
         if (action === 'Edit') {

@@ -1,3 +1,4 @@
+using inventory.model;
 using inventory.service.Account;
 using inventory.service.Core;
 using inventory.service.Dashboard;
@@ -103,12 +104,10 @@ namespace inventory.webapi
                     },
                     OnTokenValidated = async context =>
                     {
-                        string userId = context.Principal.FindFirstValue("UserId");
-                        string role = context.Principal.FindFirstValue("UserId");
-
+                        MvUser user = JsonConvert.DeserializeObject<MvUser>(context.Principal.FindFirstValue("User"));
                         var db = await Task.FromResult(context.HttpContext.RequestServices.GetRequiredService<IDataService>());
-                        db.CurrentUserId = Convert.ToInt32(userId);
-                        db.Role = role;
+                        db.CurrentUserId = user.UserId;
+                        db.Role = user.Role;
                     }
                 };
             });

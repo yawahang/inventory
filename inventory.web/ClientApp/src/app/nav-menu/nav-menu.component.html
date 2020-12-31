@@ -1,7 +1,7 @@
-<header *ngIf="auth.isAuthenticated">
+<header *ngIf="isAuthenticated">
   <nav class="nav-bar-wrp navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
-    <div class="row container">
-      <div class="col-6">
+    <div class="row nav-bar-container">
+      <div class="col-6 nav-logo">
         <mat-icon class="site-icon">local_grocery_store</mat-icon>
         <a class="navbar-brand nav-bar-link" [routerLink]="['/']">Inventory Management System</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
@@ -9,11 +9,11 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      <div class="col-6 navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
-        <mat-icon class="logout-icon" (click)="auth.logout()" *ngIf="auth.isAuthenticated" matTooltip="Logout">
+      <div class="col-6 nav-menu navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
+        <mat-icon class="logout-icon" (click)="auth.logout()" *ngIf="isAuthenticated" matTooltip="Logout">
           exit_to_app</mat-icon>
         <ul class="navbar-nav flex-grow">
-          <li *ngFor="let nav of navigationList" class="nav-item" [routerLinkActive]="['link-active']">
+          <li *ngFor="let nav of navigationList" class="nav-item m-rl-8px" [routerLinkActive]="['link-active']">
             <a class="nav-link text-dark" [routerLink]="[nav.Url]">{{nav.Navigation}}</a>
           </li>
         </ul>

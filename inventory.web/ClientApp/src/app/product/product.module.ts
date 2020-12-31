@@ -1,3 +1,4 @@
+import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -38,7 +39,8 @@ const routes: Routes = [
     MatInputModule,
     CdkTableModule,
     MatSelectModule,
-    MatDividerModule
+    MatDividerModule,
+    MatIconModule
   ],
   declarations: [
     ProductComponent,

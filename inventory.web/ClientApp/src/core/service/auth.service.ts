@@ -1,6 +1,5 @@
-import { WebApiService } from 'src/core/service/web-api.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -10,18 +9,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 
-export class AuthService {
-
-  apiUrl = environment.apiUrl;
-
-  secretKey = 'secretKey@123';
-  tokenKey = 'InventoryToken';
+export class AuthService implements OnInit {
 
   jwtHelper: JwtHelperService = new JwtHelperService();
-  authenticated = new BehaviorSubject<boolean>(null);
-  isAuthenticated = false;
+  subAuthenticated = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient) {
+  }
+
+  ngOnInit(): void {
 
   }
 
@@ -29,7 +25,7 @@ export class AuthService {
 
     if (value) {
 
-      return CryptoJS.AES.encrypt(value, this.secretKey);
+      return CryptoJS.AES.encrypt(value, environment.secretKey);
     } else {
 
       return null;
@@ -40,7 +36,7 @@ export class AuthService {
 
     if (value) {
 
-      var bytes = CryptoJS.AES.decrypt(value.toString(), this.secretKey);
+      var bytes = CryptoJS.AES.decrypt(value.toString(), environment.secretKey);
       var decrytedText = bytes.toString(CryptoJS.enc.Utf8);
       return decrytedText;
     } else {
@@ -49,39 +45,29 @@ export class AuthService {
     }
   }
 
-  setToken(value: any) {
+  setToken(token: any) {
 
-    localStorage.setItem(this.tokenKey, this.encrypt(value));
+    this.setLocalStorage(environment.tokenKey, token);
   }
 
-  getToken() {
+  getToken(): string {
 
-    let token = localStorage.getItem(this.tokenKey);
-    token = this.decrypt(token);
-    return token;
-  }
-
-  removeToken() {
-
-    localStorage.removeItem(this.tokenKey)
+    return this.getLocalStorage(environment.tokenKey);
   }
 
   getTokenValueByKey(key: string): any {
 
-    let token = this.getToken();
-
+    let token = this.decodeToken();
     if (token) {
 
       try {
 
-        token = this.jwtHelper.decodeToken(token);
-        const data = JSON.parse(token['Data'] || '{}');
-
+        token = JSON.parse(token['User']);
         if (key.charAt(0).toUpperCase() + key.slice(1) === 'All') {
-          return data;
+          return token;
         }
 
-        return data[key] || null;
+        return token[key] || null;
       } catch (e) {
 
         return token;
@@ -91,10 +77,69 @@ export class AuthService {
     return null;
   }
 
+  decodeToken() {
+
+    let token = this.getToken();
+    if (token) {
+      return this.jwtHelper.decodeToken(token);
+    } else {
+
+      return null;
+    }
+  }
+
   isTokenValid(): boolean {
 
     const token = this.getToken();
     return (token && !this.jwtHelper.isTokenExpired(token));
+  }
+
+  setLocalStorage(key: string, value: any) {
+
+    let data = localStorage.getItem(environment.storageKey);
+    if (data) {
+
+      data = JSON.parse(this.decrypt(data));
+      data = Object.assign(data, { [key]: value });
+      localStorage.setItem(environment.storageKey, this.encrypt(JSON.stringify(data)));
+    } else {
+
+      let dataNew = Object.assign({}, { [key]: value });
+      localStorage.setItem(environment.storageKey, this.encrypt(JSON.stringify(dataNew)));
+    }
+  }
+
+  getLocalStorage(key: string) {
+
+    let data = localStorage.getItem(environment.storageKey);
+    if (data) {
+
+      data = JSON.parse(this.decrypt(data));
+      return data[key] || null;
+    } else {
+
+      return null;
+    }
+  }
+
+  removeLocalStorage(key: string) {
+
+    let data = localStorage.getItem(environment.storageKey);
+    if (data) {
+
+      data = JSON.parse(this.decrypt(data));
+      if (data.hasOwnProperty(key)) {
+
+        delete data[key];
+      }
+    }
+  }
+
+  clearLocalStorage() {
+
+    if (localStorage.getItem(environment.storageKey)) {
+      localStorage.removeItem(environment.storageKey);
+    }
   }
 
   logout() {
@@ -108,10 +153,14 @@ export class AuthService {
 
   logoutSession() {
 
-    sessionStorage.clear();
+    this.clearLocalStorage();
     // this.ngxCache.clearCache();
-    this.isAuthenticated = false;
-    this.authenticated.next(false);
+    this.setLocalStorage('isAuthenticated', false);
+    this.subAuthenticated.next(false);
+    this.redirectToLogin();
+  }
+
+  redirectToLogin() {
 
     window.history.replaceState({}, 'login', '/login/');
     window.location.href = `${environment.webUrl}login/`;
@@ -119,7 +168,7 @@ export class AuthService {
 
   logoutAsync(): Observable<any> {
 
-    return this.http.post(this.apiUrl + 'Account/Logout', { Json: {} }, { headers: this.getHeaderOptions() });
+    return this.http.post(environment.apiUrl + 'Account/Logout', { Json: {} }, { headers: this.getHeaderOptions() });
   }
 
   getHeaderOptions(): HttpHeaders {

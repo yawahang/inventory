@@ -16,9 +16,7 @@ using System.Threading.Tasks;
 
 namespace inventory.webapi.Controllers
 {
-    [Produces("application/json")]
-    [EnableCors("AllowOrigin"), Route("api/[controller]/[action]/{id?}")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
         private readonly IAccountService _asr;
         private readonly IConfiguration _conf;
@@ -53,8 +51,7 @@ namespace inventory.webapi.Controllers
         }
 
         [HttpPost]
-        //[Authorize("Bearer")]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             try
@@ -66,8 +63,8 @@ namespace inventory.webapi.Controllers
                 if (handler.CanReadToken(token))
                 {
                     var usrToken = handler.ReadJwtToken(token);
-                    MvUser data = JsonConvert.DeserializeObject<MvUser>(usrToken.Claims.First(a => a.Type == "Data").Value);
-                    object expiredToken = await GenerateJwtToken(data, true);
+                    MvUser user = JsonConvert.DeserializeObject<MvUser>(usrToken.Claims.First(a => a.Type == "User").Value);
+                    object expiredToken = await GenerateJwtToken(user, true);
                     return Ok(expiredToken);
                 }
 
@@ -83,8 +80,7 @@ namespace inventory.webapi.Controllers
         {
             var claims = new[]
                     {
-                        new Claim("UserId", data.UserId.ToString() ),
-                        new Claim("Data", JsonConvert.SerializeObject(data))
+                        new Claim("User", JsonConvert.SerializeObject(data))
                     };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["ApiKey"]));

@@ -26,9 +26,24 @@ mat-icon:hover{
 }
 
 .nav-bar-wrp {
-  background: #018786 !important;
+  background-image: linear-gradient(to right, #495a5a , #809e76) !important;
   padding-bottom: 10px; 
   margin-bottom: 0px !important;
+}
+
+.nav-bar-container{
+  display: flex;
+  width: 100% !important;
+}
+
+.nav-logo{
+  width: 20% !important;
+  margin-right: auto !important;
+}
+
+.nav-menu{
+  width: 20% !important;
+  margin-left: auto !important;
 }
 
 .nav-bar-wrp > .container {
@@ -53,11 +68,11 @@ mat-icon:hover{
   color: rgb(167, 238, 53) !important;
 }
 .navbar-nav > .nav-item.link-active{
-  background-color: #0f9695 !important;
+  background-color: #6d876d !important;
 }
  
 .navbar-nav > .nav-item:hover{
-  background-color: #0f9695 !important;
+  background-color:#728d6f !important;
 }
 
 .navbar-nav > .nav-item > a{

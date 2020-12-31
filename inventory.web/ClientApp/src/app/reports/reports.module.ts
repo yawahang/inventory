@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReportsComponent } from './reports.component';
 import { ExcelModule, GridModule, PDFModule } from '@progress/kendo-angular-grid';
 import { RouterModule, Routes } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     GridModule,
     PDFModule,
-    ExcelModule
+    ExcelModule,
+    MatIconModule
   ]
 })
 export class ReportsModule {

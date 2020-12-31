@@ -24,9 +24,9 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     ChartsModule,
-    MatIconModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatIconModule
   ],
   providers: [
     DashboardService

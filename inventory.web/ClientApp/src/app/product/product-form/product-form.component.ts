@@ -69,9 +69,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
         this.ps.addProduct(this.selectedProduct).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
 
-          if (response) {
+          if (response && response[0]) {
 
-            this.dialogRef.close(response);
+            this.dialogRef.close(response[0]);
             this.us.openSnackBar('Product added', 'success');
           } else {
 
@@ -83,9 +83,9 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
         this.ps.updateProduct(this.selectedProduct).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
 
-          if (response) {
+          if (response && response[0]) {
 
-            this.dialogRef.close(response);
+            this.dialogRef.close(response[0]);
             this.us.openSnackBar('Product edited', 'success');
           } else {
 
