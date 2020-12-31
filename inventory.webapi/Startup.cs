@@ -1,7 +1,9 @@
 using inventory.service.Account;
 using inventory.service.Core;
+using inventory.service.Dashboard;
 using inventory.service.Data;
 using inventory.service.Product;
+using inventory.service.Report;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -137,6 +139,8 @@ namespace inventory.webapi
 
             services.AddTransient<IAccountService, AccountService>()
                 .AddTransient<IProductService, ProductService>()
+                .AddTransient<IDashboardService, DashboardService>()
+                .AddTransient<IReportService, ReportService>()
                 .AddTransient<ICoreService, CoreService>()
                 .AddScoped<IDataService, DataService>()
                 .AddSingleton(Configuration)
