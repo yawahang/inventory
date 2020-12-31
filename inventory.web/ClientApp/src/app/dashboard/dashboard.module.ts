@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard.component';
 import { ChartsModule } from '@progress/kendo-angular-charts';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardService } from './dashboard.service';
 
 const routes: Routes = [
   {
@@ -26,6 +27,9 @@ const routes: Routes = [
     MatIconModule,
     MatCardModule,
     MatMenuModule
+  ],
+  providers: [
+    DashboardService
   ]
 })
 export class DashboardModule {

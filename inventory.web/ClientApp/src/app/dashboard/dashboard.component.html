@@ -1,108 +1,123 @@
 <div class="site-content">
   <span class="breadcrumb">Products</span>
 
-  <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
-    <div fxFlex="25%" class="p-4">
+  <div fxLayout="row" fxLayoutGap="12px">
+    <div fxFlex>
       <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-subtitle>Available Stock</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div class="m-l-40">
-            <h1>8</h1>
+            <h1>{{box?.Available}}</h1>
           </div>
         </mat-card-content>
       </mat-card>
     </div>
 
-    <div fxFlex="25%" class="p-4">
+    <div fxFlex>
       <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-subtitle>Out Of Stock</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div class="m-l-40">
-            <h1>25</h1>
+            <h1>{{box?.OutOfStock}}</h1>
           </div>
         </mat-card-content>
       </mat-card>
     </div>
 
-    <div fxFlex="25%" class="p-4">
+    <div fxFlex>
       <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-subtitle>Damaged Stock</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div class="m-l-40">
-            <h1>60</h1>
+            <h1>{{box?.Damaged}}</h1>
           </div>
         </mat-card-content>
       </mat-card>
     </div>
 
-    <div fxFlex="25%" class="p-4">
+    <div fxFlex>
       <mat-card class="d-tile">
         <mat-card-header>
           <mat-card-subtitle>Stock This Year</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <div class="m-l-40">
-            <h1>100</h1>
+            <h1>{{box?.StockThisYear}}</h1>
           </div>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
 
-  <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
-    <div fxFlex="50%" class="p-4">
+  <div fxLayout="row" fxLayoutGap="12px">
+    <div fxFlex>
       <mat-card class="d-chart">
         <mat-card-header>
-          <mat-card-title>Out Of Stock Trend This Week</mat-card-title>
+          <mat-card-title>Top 5 Stock Trend This Month</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div>
-            <kendo-chart>
-              <kendo-chart-title text="Units sold"></kendo-chart-title>
-              <kendo-chart-category-axis>
-                <kendo-chart-category-axis-item [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']"
-                  [title]="{ text: 'Months' }">
-                </kendo-chart-category-axis-item>
-              </kendo-chart-category-axis>
-              <kendo-chart-series>
-                <kendo-chart-series-item type="line" [data]="[123, 276, 310, 212, 240, 156, 98]">
-                </kendo-chart-series-item>
-                <kendo-chart-series-item type="line" [data]="[165, 210, 287, 144, 190, 167, 212]">
-                </kendo-chart-series-item>
-                <kendo-chart-series-item type="line" [data]="[56, 140, 195, 46, 123, 78, 95]">
-                </kendo-chart-series-item>
-              </kendo-chart-series>
-            </kendo-chart>
-          </div>
+          <ng-container *ngTemplateOutlet="barLineCol; context: { $implicit: trendLine }">
+          </ng-container>
         </mat-card-content>
       </mat-card>
     </div>
 
-    <div fxFlex="50%" class="p-4">
+    <div fxFlex>
       <mat-card class="d-chart">
         <mat-card-header>
-          <mat-card-title>Stock Dist By Status This Week</mat-card-title>
+          <mat-card-title>Top 5 Stock Dist By Status This Month</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div>
-            <kendo-chart>
-              <kendo-chart-series>
-                <kendo-chart-series-item type="donut" [data]="data" categoryField="kind" field="share">
-                  <kendo-chart-series-item-labels [content]="labelContent" color="#fff" background="none">
-                  </kendo-chart-series-item-labels>
-                </kendo-chart-series-item>
-              </kendo-chart-series>
-              <kendo-chart-legend [visible]="false"></kendo-chart-legend>
-            </kendo-chart>
-          </div>
+          <ng-container *ngTemplateOutlet="pieDonut; context: { $implicit: donutChart }">
+          </ng-container>
         </mat-card-content>
       </mat-card>
     </div>
   </div>
 </div>
+
+<!-- Chart -->
+<ng-template #barLineCol let-chartDS>
+  <kendo-chart [categoryAxis]="chartDS.CategoryAxis" [pannable]="chartDS.Pannable" [zoomable]="chartDS.Zoomable">
+    <kendo-chart-series>
+      <kendo-chart-series-item [stack]="chartDS.Stack" [type]="chartDS.Type" [categoryField]="chartDS.YAxis"
+        *ngFor="let ss of chartDS.Data?.Series; let i=index;" [name]="ss.Name " [field]="chartDS.YAxis" [data]="ss.Data"
+        [style]="'smooth'">
+
+        <kendo-chart-series-item-labels *ngIf="!chartDS.Stack && chartDS.Type != 'line'" [format]="ss.Format"
+          background="none" position="outsideEnd" [padding]="5" color="#fff">
+        </kendo-chart-series-item-labels>
+
+        <kendo-chart-series-item-labels *ngIf="chartDS.Stack && chartDS.Type != 'line'" [format]="ss.Format"
+          background="none" position="top" [padding]="5" [margin]="{ top: getTop(i) }" color="#fff">
+        </kendo-chart-series-item-labels>
+
+        <kendo-chart-series-item-tooltip [format]="ss.Format" color="#fff">
+        </kendo-chart-series-item-tooltip>
+
+      </kendo-chart-series-item>
+    </kendo-chart-series>
+
+    <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+  </kendo-chart>
+</ng-template>
+
+<ng-template #pieDonut let-chartDS>
+  <kendo-chart [categoryAxis]="chartDS.categoryAxis">
+    <kendo-chart-series>
+      <kendo-chart-series-item [type]="chartDS.Type" [categoryField]="chartDS.XAxis" [name]="'Status'"
+        [field]="chartDS.YAxis" [data]="chartDS.Data">
+        <kendo-chart-series-item-labels [format]="chartDS.Format" color="#fff" background="none">
+        </kendo-chart-series-item-labels>
+      </kendo-chart-series-item>
+    </kendo-chart-series>
+
+    <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+  </kendo-chart>
+</ng-template>

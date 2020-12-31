@@ -25,7 +25,7 @@ namespace inventory.webapi.Controllers
                 }
                 else
                 {
-                    return Ok(response.Data);
+                    return Ok(response.Data[0]);
                 }
             }
             catch (Exception ex)

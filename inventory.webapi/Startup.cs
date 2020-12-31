@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
@@ -39,7 +41,13 @@ namespace inventory.webapi
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore().AddNewtonsoftJson(); // configure api for Json Array Of Obj response (Requires: Microsoft.AspNetCore.Mvc.NewtonsoftJson)
+            services.AddMvcCore().AddNewtonsoftJson(options =>
+            {
+                options.UseCamelCasing(true);
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
+                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+            });
 
             var allowOrigin = Configuration.GetSection("AllowOrigin").Get<List<string>>(); // configure Chors for endpoint
             services.AddCors(options =>

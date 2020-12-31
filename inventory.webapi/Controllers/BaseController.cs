@@ -6,7 +6,7 @@ namespace inventory.webapi.Controllers
 {
     [Produces("application/json")]
     [EnableCors("AllowOrigin"), Route("api/[controller]/[action]/{id?}")]
-    [Authorize("Bearer")]
+    [Authorize]
     public class BaseController : ControllerBase
     {
 

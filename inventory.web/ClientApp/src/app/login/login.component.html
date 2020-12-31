@@ -1,20 +1,19 @@
 <div class="site-content">
   <mat-card class="box-login">
-
     <mat-card-header>
       <mat-card-title>
         <mat-icon>account_circle</mat-icon>
         <span>Login</span>
       </mat-card-title>
     </mat-card-header>
+    <mat-card-content>
+      <form name="fmLogin" [formGroup]="fmLogin" class="login-form" (ngSubmit)="login()" novalidate
+        class="example-form">
 
-    <form name="fmLogin" [formGroup]="fmLogin" class="login-form" (ngSubmit)="login()" novalidate class="example-form">
+        <mat-error *ngIf="errorMessage != ''">
+          {{ errorMessage }}
+        </mat-error>
 
-      <mat-error *ngIf="errorMessage != ''">
-        {{ errorMessage }}
-      </mat-error>
-
-      <mat-card-content>
         <mat-form-field class="login-full-width">
           <input matInput type="text" placeholder="Username" formControlName="Username" required>
         </mat-form-field>
@@ -25,12 +24,10 @@
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </mat-form-field>
 
-      </mat-card-content>
-
-      <div class="login-full-width login-btn-wrapper">
-        <button mat-raised-button color="primary">Login</button>
-      </div>
-
-    </form>
+        <div class="login-full-width login-btn-wrapper">
+          <button mat-raised-button color="primary">Login</button>
+        </div>
+      </form>
+    </mat-card-content>
   </mat-card>
 </div>
