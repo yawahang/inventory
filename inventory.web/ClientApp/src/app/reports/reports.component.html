@@ -1,73 +1,75 @@
-<span class="breadcrumb">Products</span>
-<div class="action-button-wap">
-  <button type="button" class="action-button" mat-raised-button (click)="addProduct()">Add</button>
-  <button type="button" class="action-button" mat-raised-button (click)="editProduct()">Edit</button>
+<div class="site-content">
+  <span class="breadcrumb">Products</span>
+  <div class="action-button-wap">
+    <button type="button" class="action-button" mat-raised-button (click)="addProduct()">Add</button>
+    <button type="button" class="action-button" mat-raised-button (click)="editProduct()">Edit</button>
+  </div>
+
+  <kendo-grid [data]="gridData" [pageSize]="state.take" [skip]="state.skip" [sort]="state.sort" [group]="state.group"
+    [sortable]="{ mode: 'multiple' }" [pageable]="true" [groupable]="{ showFooter: true }" [resizable]="true"
+    (dataStateChange)="dataStateChange($event)" style="max-height: 660px;">
+
+    <ng-template kendoGridToolbarTemplate>
+      <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
+      <button kendoGridExcelCommand icon="file-excel">Export to Excel</button>
+    </ng-template>
+
+    <kendo-grid-column field="ProductID" title="Product ID" width="150">
+    </kendo-grid-column>
+    <kendo-grid-column field="ProductName" title="Product Name">
+      <ng-template kendoGridGroupHeaderColumnTemplate let-group="group" let-aggregates="aggregates">
+        <span title="Group Header Column Template for ProductName">
+          Count: {{ aggregates.Discontinued.count }}
+        </span>
+      </ng-template>
+      <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+        <span title="Group Footer Template for ProductName">
+          Count: {{ aggregates.Discontinued.count }}
+        </span>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="UnitPrice" title="Unit Price" width="150">
+      <ng-template kendoGridGroupHeaderTemplate let-group="group">
+        <span title="Group Header Template for UnitPrice">
+          Price: {{ group.value }}
+        </span>
+      </ng-template>
+      <ng-template kendoGridGroupHeaderColumnTemplate let-group="group" let-aggregates="aggregates">
+        <span title="Group Header Column Template for UnitPrice">
+          Average: {{ aggregates.UnitPrice.average }}
+        </span>
+      </ng-template>
+      <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+        <span title="Group Footer Template for UnitPrice">
+          Average: {{ aggregates.UnitPrice.average }}
+        </span>
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column field="Discontinued" width="200">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{ dataItem.Discontinued ? "Yes" : "No" }}
+      </ng-template>
+      <ng-template kendoGridGroupHeaderTemplate let-group="group" let-aggregates="aggregates">
+        <span title="Group Header Template for Discontinued">
+          {{group.value ? 'Discontinued' : 'Not Discontinued'}}
+        </span>
+      </ng-template>
+    </kendo-grid-column>
+
+    <kendo-grid-pdf fileName="Products.pdf" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
+      <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
+      <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+        <div class="page-template">
+          <div class="header">
+            <div style="float: right">Page {{ pageNum }} of {{ totalPages }}</div>
+            Multi-page grid with automatic page breaking
+          </div>
+          <div class="footer">
+            Page {{ pageNum }} of {{ totalPages }}
+          </div>
+        </div>
+      </ng-template>
+    </kendo-grid-pdf>
+
+  </kendo-grid>
 </div>
-
-<kendo-grid [data]="gridData" [pageSize]="state.take" [skip]="state.skip" [sort]="state.sort" [group]="state.group"
-  [sortable]="{ mode: 'multiple' }" [pageable]="true" [groupable]="{ showFooter: true }" [resizable]="true"
-  (dataStateChange)="dataStateChange($event)" style="max-height: 660px;">
-
-  <ng-template kendoGridToolbarTemplate>
-    <button kendoGridPDFCommand icon="file-pdf">Export to PDF</button>
-    <button kendoGridExcelCommand icon="file-excel">Export to Excel</button>
-  </ng-template>
-
-  <kendo-grid-column field="ProductID" title="Product ID" width="150">
-  </kendo-grid-column>
-  <kendo-grid-column field="ProductName" title="Product Name">
-    <ng-template kendoGridGroupHeaderColumnTemplate let-group="group" let-aggregates="aggregates">
-      <span title="Group Header Column Template for ProductName">
-        Count: {{ aggregates.Discontinued.count }}
-      </span>
-    </ng-template>
-    <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
-      <span title="Group Footer Template for ProductName">
-        Count: {{ aggregates.Discontinued.count }}
-      </span>
-    </ng-template>
-  </kendo-grid-column>
-  <kendo-grid-column field="UnitPrice" title="Unit Price" width="150">
-    <ng-template kendoGridGroupHeaderTemplate let-group="group">
-      <span title="Group Header Template for UnitPrice">
-        Price: {{ group.value }}
-      </span>
-    </ng-template>
-    <ng-template kendoGridGroupHeaderColumnTemplate let-group="group" let-aggregates="aggregates">
-      <span title="Group Header Column Template for UnitPrice">
-        Average: {{ aggregates.UnitPrice.average }}
-      </span>
-    </ng-template>
-    <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
-      <span title="Group Footer Template for UnitPrice">
-        Average: {{ aggregates.UnitPrice.average }}
-      </span>
-    </ng-template>
-  </kendo-grid-column>
-  <kendo-grid-column field="Discontinued" width="200">
-    <ng-template kendoGridCellTemplate let-dataItem>
-      {{ dataItem.Discontinued ? "Yes" : "No" }}
-    </ng-template>
-    <ng-template kendoGridGroupHeaderTemplate let-group="group" let-aggregates="aggregates">
-      <span title="Group Header Template for Discontinued">
-        {{group.value ? 'Discontinued' : 'Not Discontinued'}}
-      </span>
-    </ng-template>
-  </kendo-grid-column>
-
-  <kendo-grid-pdf fileName="Products.pdf" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
-    <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
-    <ng-template kendoGridPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
-      <div class="page-template">
-        <div class="header">
-          <div style="float: right">Page {{ pageNum }} of {{ totalPages }}</div>
-          Multi-page grid with automatic page breaking
-        </div>
-        <div class="footer">
-          Page {{ pageNum }} of {{ totalPages }}
-        </div>
-      </div>
-    </ng-template>
-  </kendo-grid-pdf>
-
-</kendo-grid>

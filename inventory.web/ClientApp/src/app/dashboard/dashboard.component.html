@@ -1,110 +1,112 @@
-<span class="breadcrumb">Products</span>
+<div class="site-content">
+  <span class="breadcrumb">Products</span>
 
-<div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
-  <div fxFlex="25%" class="p-4">
-    <mat-card class="d-tile">
-      <mat-card-header>
-        <mat-card-title>Today</mat-card-title>
-        <mat-card-subtitle>Stock</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="m-l-40">
-          <h1>8</h1>
-        </div>
-      </mat-card-content>
-    </mat-card>
+  <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
+    <div fxFlex="25%" class="p-4">
+      <mat-card class="d-tile">
+        <mat-card-header>
+          <mat-card-title>Today</mat-card-title>
+          <mat-card-subtitle>Stock</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="m-l-40">
+            <h1>8</h1>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div fxFlex="25%" class="p-4">
+      <mat-card class="d-tile">
+        <mat-card-header>
+          <mat-card-title>Weekly</mat-card-title>
+          <mat-card-subtitle>Stock</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="m-l-40">
+            <h1>25</h1>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div fxFlex="25%" class="p-4">
+      <mat-card class="d-tile">
+        <mat-card-header>
+          <mat-card-title>Monthly</mat-card-title>
+          <mat-card-subtitle>Stock</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="m-l-40">
+            <h1>60</h1>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div fxFlex="25%" class="p-4">
+      <mat-card class="d-tile">
+        <mat-card-header>
+          <mat-card-title>Yearly</mat-card-title>
+          <mat-card-subtitle>Stock</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="m-l-40">
+            <h1>100</h1>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 
-  <div fxFlex="25%" class="p-4">
-    <mat-card class="d-tile">
-      <mat-card-header>
-        <mat-card-title>Weekly</mat-card-title>
-        <mat-card-subtitle>Stock</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="m-l-40">
-          <h1>25</h1>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
+  <div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
+    <div fxFlex="50%" class="p-4">
+      <mat-card class="d-chart">
+        <mat-card-header>
+          <mat-card-title>Stock Trend</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <kendo-chart>
+              <kendo-chart-title text="Units sold"></kendo-chart-title>
+              <kendo-chart-category-axis>
+                <kendo-chart-category-axis-item [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']"
+                  [title]="{ text: 'Months' }">
+                </kendo-chart-category-axis-item>
+              </kendo-chart-category-axis>
+              <kendo-chart-series>
+                <kendo-chart-series-item type="line" [data]="[123, 276, 310, 212, 240, 156, 98]">
+                </kendo-chart-series-item>
+                <kendo-chart-series-item type="line" [data]="[165, 210, 287, 144, 190, 167, 212]">
+                </kendo-chart-series-item>
+                <kendo-chart-series-item type="line" [data]="[56, 140, 195, 46, 123, 78, 95]">
+                </kendo-chart-series-item>
+              </kendo-chart-series>
+            </kendo-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-  <div fxFlex="25%" class="p-4">
-    <mat-card class="d-tile">
-      <mat-card-header>
-        <mat-card-title>Monthly</mat-card-title>
-        <mat-card-subtitle>Stock</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="m-l-40">
-          <h1>60</h1>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <div fxFlex="25%" class="p-4">
-    <mat-card class="d-tile">
-      <mat-card-header>
-        <mat-card-title>Yearly</mat-card-title>
-        <mat-card-subtitle>Stock</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="m-l-40">
-          <h1>100</h1>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-</div>
-
-<div fxLayout="row wrap" fxLayoutGap="12px" fxLayoutAlign="space-between center">
-  <div fxFlex="50%" class="p-4">
-    <mat-card class="d-chart">
-      <mat-card-header>
-        <mat-card-title>Stock Trend</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div>
-          <kendo-chart>
-            <kendo-chart-title text="Units sold"></kendo-chart-title>
-            <kendo-chart-category-axis>
-              <kendo-chart-category-axis-item [categories]="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']"
-                [title]="{ text: 'Months' }">
-              </kendo-chart-category-axis-item>
-            </kendo-chart-category-axis>
-            <kendo-chart-series>
-              <kendo-chart-series-item type="line" [data]="[123, 276, 310, 212, 240, 156, 98]">
-              </kendo-chart-series-item>
-              <kendo-chart-series-item type="line" [data]="[165, 210, 287, 144, 190, 167, 212]">
-              </kendo-chart-series-item>
-              <kendo-chart-series-item type="line" [data]="[56, 140, 195, 46, 123, 78, 95]">
-              </kendo-chart-series-item>
-            </kendo-chart-series>
-          </kendo-chart>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  </div>
-
-  <div fxFlex="50%" class="p-4">
-    <mat-card class="d-chart">
-      <mat-card-header>
-        <mat-card-title>Stock Dist By Status</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div>
-          <kendo-chart>
-            <kendo-chart-series>
-              <kendo-chart-series-item type="donut" [data]="data" categoryField="kind" field="share">
-                <kendo-chart-series-item-labels [content]="labelContent" color="#fff" background="none">
-                </kendo-chart-series-item-labels>
-              </kendo-chart-series-item>
-            </kendo-chart-series>
-            <kendo-chart-legend [visible]="false"></kendo-chart-legend>
-          </kendo-chart>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <div fxFlex="50%" class="p-4">
+      <mat-card class="d-chart">
+        <mat-card-header>
+          <mat-card-title>Stock Dist By Status</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div>
+            <kendo-chart>
+              <kendo-chart-series>
+                <kendo-chart-series-item type="donut" [data]="data" categoryField="kind" field="share">
+                  <kendo-chart-series-item-labels [content]="labelContent" color="#fff" background="none">
+                  </kendo-chart-series-item-labels>
+                </kendo-chart-series-item>
+              </kendo-chart-series>
+              <kendo-chart-legend [visible]="false"></kendo-chart-legend>
+            </kendo-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

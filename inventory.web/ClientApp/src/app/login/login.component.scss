@@ -1,3 +1,11 @@
+ :host{
+	flex: 1;
+    display: flex;
+    justify-content: center;
+    margin-top: -10%;
+	align-items: center;
+	background-image: url(../../assets/images/login-bg.jpeg);
+ } 
   .login-form {
       min-width: 150px;
       max-width: 500px;
@@ -8,14 +16,14 @@
     width: 100%;
   }
  
-.box {
+.box-login {
 	position: relative;
 	top: 0;
 	opacity: 1;
 	float: left;
 	padding: 40px;
 	width: 100%;
-	background: #fcf5f5;
+	background: #e8f0fe;
 	border-radius: 10px;
 	transform: scale(1);
 	-webkit-transform: scale(1);
@@ -63,8 +71,22 @@
 .main-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
 	padding: 0.8375em 0;
 }
-
-mat-icon{
-	cursor: pointer;
+ 
+  .mat-card-title{
+	  
+	display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
   }
-  
+   .mat-card-title > mat-icon{
+	margin-right: 10px;
+   }
+
+   .login-btn-wrapper{
+	display: flex;
+   }
+
+   .mat-raised-button{
+	   flex: 1 !important;
+   }

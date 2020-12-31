@@ -15,6 +15,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UtilityService } from 'src/core/service/utility.service';
 import { MatSelectModule } from '@angular/material/select';
 import { CoreService } from 'src/core/service/core.service';
+import { MatDividerModule } from '@angular/material/divider';
 
 const routes: Routes = [
   {
@@ -36,7 +37,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatInputModule,
     CdkTableModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDividerModule
   ],
   declarations: [
     ProductComponent,

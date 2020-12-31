@@ -1,13 +1,18 @@
+import { WebApiService } from 'src/core/service/web-api.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
+
+  apiUrl = environment.apiUrl;
 
   secretKey = 'secretKey@123';
   tokenKey = 'InventoryToken';
@@ -16,20 +21,32 @@ export class AuthService {
   authenticated = new BehaviorSubject<boolean>(null);
   isAuthenticated = false;
 
-  constructor() {
+  constructor(private http: HttpClient) {
 
   }
 
   encrypt(value: any) {
 
-    return CryptoJS.AES.encrypt(value, this.secretKey);
+    if (value) {
+
+      return CryptoJS.AES.encrypt(value, this.secretKey);
+    } else {
+
+      return null;
+    }
   }
 
   decrypt(value: any) {
 
-    var bytes = CryptoJS.AES.decrypt(value.toString(), this.secretKey);
-    var decrytedText = bytes.toString(CryptoJS.enc.Utf8);
-    return decrytedText;
+    if (value) {
+
+      var bytes = CryptoJS.AES.decrypt(value.toString(), this.secretKey);
+      var decrytedText = bytes.toString(CryptoJS.enc.Utf8);
+      return decrytedText;
+    } else {
+
+      return null;
+    }
   }
 
   setToken(value: any) {
@@ -58,7 +75,7 @@ export class AuthService {
       try {
 
         token = this.jwtHelper.decodeToken(token);
-        const data = JSON.parse(token['data'] || '{}');
+        const data = JSON.parse(token['Data'] || '{}');
 
         if (key.charAt(0).toUpperCase() + key.slice(1) === 'All') {
           return data;
@@ -78,5 +95,43 @@ export class AuthService {
 
     const token = this.getToken();
     return (token && !this.jwtHelper.isTokenExpired(token));
+  }
+
+  logout() {
+
+    this.logoutAsync().subscribe((response: any) => {
+
+      this.setToken(response['token']);
+      this.logoutSession();
+    });
+  }
+
+  logoutSession() {
+
+    sessionStorage.clear();
+    // this.ngxCache.clearCache();
+    this.isAuthenticated = false;
+    this.authenticated.next(false);
+
+    window.history.replaceState({}, 'login', '/login/');
+    window.location.href = `${environment.webUrl}login/`;
+  }
+
+  logoutAsync(): Observable<any> {
+
+    return this.http.post(this.apiUrl + 'Account/Logout', { Json: {} }, { headers: this.getHeaderOptions() });
+  }
+
+  getHeaderOptions(): HttpHeaders {
+
+    const token = this.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type',
+      'Access-Control-Allow-Methods': 'GET, POST',
+      Authorization: `Bearer ${token}`
+    });
+    return headers;
   }
 }

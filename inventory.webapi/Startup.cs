@@ -1,5 +1,4 @@
 using inventory.service.Account;
-using inventory.service.Base;
 using inventory.service.Core;
 using inventory.service.Data;
 using inventory.service.Product;
@@ -12,11 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO.Compression;
+using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -81,11 +80,25 @@ namespace inventory.webapi
                 {
                     OnAuthenticationFailed = context =>
                     {
-                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        context.Response.OnStarting(async () =>
                         {
+                            context.NoResult();
                             context.Response.Headers.Add("Token-Expired", "true");
-                        }
+                            context.Response.ContentType = "text/plain";
+                            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                            await context.Response.WriteAsync(context.Exception.Message);
+                        });
+
                         return Task.CompletedTask;
+                    },
+                    OnTokenValidated = async context =>
+                    {
+                        string userId = context.Principal.FindFirstValue("UserId");
+                        string role = context.Principal.FindFirstValue("UserId");
+
+                        var db = await Task.FromResult(context.HttpContext.RequestServices.GetRequiredService<IDataService>());
+                        db.CurrentUserId = Convert.ToInt32(userId);
+                        db.Role = role;
                     }
                 };
             });
@@ -122,8 +135,7 @@ namespace inventory.webapi
 
             services.AddMemoryCache();
 
-            services.AddTransient<IBaseService, BaseService>()
-                .AddTransient<IAccountService, AccountService>()
+            services.AddTransient<IAccountService, AccountService>()
                 .AddTransient<IProductService, ProductService>()
                 .AddTransient<ICoreService, CoreService>()
                 .AddScoped<IDataService, DataService>()
@@ -178,7 +190,7 @@ namespace inventory.webapi
 
             app.UseRouting();
 
-            app.UseCors("AllowOrigin");  // setup Chors for endpoint
+            app.UseCors("AllowOrigin");
 
             app.UseAuthentication();
 

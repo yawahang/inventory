@@ -12,5 +12,4 @@ export class LoginService {
 
     return this.api.post('Account/Login', param);
   }
-
 }

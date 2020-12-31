@@ -65,7 +65,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin: 2px !important;
 }
 
-/* Mat Tabble */
+/* Mat Table */
 table {
   width: 100%;
 }
@@ -79,7 +79,7 @@ table {
   color:#fff !important;
 }
   
-/* Mat Tabble */
+/* Mat Table */
 
 .breadcrumb {
   color:#555;
@@ -95,6 +95,26 @@ table {
   background: #f6f6f6 !important;
 }
 
-.content-wrapper{
+.content-wrapper{ 
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.site-content{
   padding: 10px !important;
 }
+
+/* Mat Dialog */
+.mat-dialog-title{
+  font-size: large !important;
+  margin-bottom: 10px !important;
+}
+.form-title-divider{
+  margin-bottom: 5px !important;
+}
+/* Mat Dialog */
+ 
+mat-icon, a{
+	cursor: pointer;
+  }

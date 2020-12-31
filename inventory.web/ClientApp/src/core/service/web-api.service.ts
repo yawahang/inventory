@@ -1,3 +1,4 @@
+import { AuthService } from 'src/core/service/auth.service';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -11,7 +12,8 @@ export class WebApiService {
 
   apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private auth: AuthService) {
 
   }
 
@@ -30,11 +32,14 @@ export class WebApiService {
 
   getHeaderOptions(): HttpHeaders {
 
-    const headers = new HttpHeaders();
-    headers.set('Content-Type', 'application/json');
-    headers.set('Access-Control-Allow-Origin', '*');
-    headers.set('Access-Control-Allow-Methods', 'GET, POST');
-    headers.set('Access-Control-Allow-Headers', 'Origin, Content-Type');
+    const token = this.auth.getToken();
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type',
+      'Access-Control-Allow-Methods': 'GET, POST',
+      Authorization: `Bearer ${token}`
+    });
     return headers;
   }
 }
