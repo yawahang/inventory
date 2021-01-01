@@ -9,10 +9,10 @@ Inventory Management Project
   - UI Framework: KendoUI (Telerik), Angular Material
   
   ## Features
-    - Core : Microsoft Identity Tokens, JwtBearer Token, Auth0, Gzip & Brotli Response Compression, Session/Cookie
-    - Add/Edit Product/Inventory
-    - Product/Inventory listing
-    - Product/Inventory Filtering
-    - Product/Inventory Report (Basic Grid or Spreadsheet Report)
+    - Core : Microsoft Identity Tokens, JwtBearer Token, Gzip & Brotli Compression, Session/Cookie
+    - Add/Edit Product
+    - Product listing
+    - Product Filtering
+    - Product Report (Basic Grid or Spreadsheet Report)
     - Dashboard (Basic)
   
