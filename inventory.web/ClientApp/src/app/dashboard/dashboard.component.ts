@@ -127,7 +127,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
 
       let min: any = categories[(categories.length - maxAxisDivisions)] || null;
-      let max: any = categories[categories.length] || null;
+      let max: any = categories[categories.length - 1] || null;
       if (min && max) {
 
         min = ['date', 'datetime', 'time'].includes(xAxisDataType) ? this.us.toJsDate(min.toString(), 'JsDate')

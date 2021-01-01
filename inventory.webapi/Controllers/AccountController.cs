@@ -1,5 +1,6 @@
 ﻿using inventory.model;
 using inventory.service.Account;
+using inventory.service.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -9,8 +10,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace inventory.webapi.Controllers
@@ -18,11 +17,11 @@ namespace inventory.webapi.Controllers
     public class AccountController : BaseController
     {
         private readonly IAccountService _asr;
-        private readonly IConfiguration _conf;
-        public AccountController(IAccountService asr, IConfiguration conf)
+        private readonly IAuthService _auth;
+        public AccountController(IAccountService asr, IAuthService auth)
         {
-            _conf = conf;
             _asr = asr;
+            _auth = auth;
         }
 
         [HttpPost]
@@ -32,14 +31,13 @@ namespace inventory.webapi.Controllers
             try
             {
                 var response = await _asr.Login(JsonConvert.SerializeObject(json.Json));
-
                 if (response.Type == "Error")
                 {
                     return Ok(response.Text);
                 }
                 else
                 {
-                    object token = await GenerateJwtToken(response.Data[0]);
+                    object token = await _auth.GenerateToken(response.Data[0]);
                     return Ok(token);
                 }
             }
@@ -55,7 +53,7 @@ namespace inventory.webapi.Controllers
         {
             try
             {
-                // Set Token as Expired OR Maintain token cache and invalidate the tokens after logout method is called
+                // Set Token as Expired || Maintain token cache and invalidate the tokens after logout method is called
                 var handler = new JwtSecurityTokenHandler();
                 var token = Request.Headers["Authorization"].ToString().Substring(7);
 
@@ -63,7 +61,7 @@ namespace inventory.webapi.Controllers
                 {
                     var usrToken = handler.ReadJwtToken(token);
                     MvUser user = JsonConvert.DeserializeObject<MvUser>(usrToken.Claims.First(a => a.Type == "User").Value);
-                    object expiredToken = await GenerateJwtToken(user, true);
+                    object expiredToken = await _auth.GenerateToken(user, true);
                     return Ok(expiredToken);
                 }
 
@@ -73,31 +71,6 @@ namespace inventory.webapi.Controllers
             {
                 throw ex;
             }
-        }
-
-        private async Task<object> GenerateJwtToken(MvUser data, bool setExpired = false)
-        {
-            var claims = new[]
-                    {
-                        new Claim("User", JsonConvert.SerializeObject(data))
-                    };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_conf["ApiKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var issuer = _conf.GetSection("Jwt:Issuer").Value;
-            var audience = _conf.GetSection("Jwt:Audience").Value;
-            var expires = setExpired ? 0 : Convert.ToInt32(_conf.GetSection("Jwt:ExpiryDay").Value);
-
-            var token = new JwtSecurityToken(
-                issuer: issuer,
-                audience: audience,
-                claims: claims,
-                notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(expires),
-                signingCredentials: creds);
-
-            return await Task.FromResult(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
         }
     }
 }

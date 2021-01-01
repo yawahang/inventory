@@ -19,7 +19,7 @@ namespace inventory.service.Account
         {
             try
             {
-                var result = await _ds.Get("dbo.SpUserSel", json);
+                string result = await _ds.Get("dbo.SpUserSel", json);
                 return JsonConvert.DeserializeObject<MvResponse<MvUser>>(result);
             }
             catch (Exception ex)

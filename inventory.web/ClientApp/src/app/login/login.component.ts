@@ -1,3 +1,4 @@
+import { UtilityService } from 'src/core/service/utility.service';
 import { environment } from './../../environments/environment';
 import { LoginService } from './login.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -26,7 +27,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     public fb: FormBuilder,
     public ls: LoginService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private us: UtilityService
   ) {
     this._unsubscribeAll = new Subject();
   }
@@ -42,11 +44,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   login() {
 
     this.errorMessage = '';
-    this.fmLogin.updateValueAndValidity();
+    this.us.formUtility(this.fmLogin, 'validate');
     if (this.fmLogin.valid) {
 
-      this.mvLogin.Username = this.fmLogin.get('Username').value.trim();
-      this.mvLogin.Password = this.fmLogin.get('Password').value.trim();
+      const login = this.us.formUtility(this.fmLogin, 'value');
+      this.mvLogin = login;
 
       this.ls.login(this.mvLogin).subscribe((response: any) => {
 

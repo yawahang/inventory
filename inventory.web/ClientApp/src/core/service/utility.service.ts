@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
@@ -13,7 +14,7 @@ export class UtilityService {
   openSnackBar(message: string, action: string) {
 
     this.snackBar.open(message, 'close', {
-      duration: 5000, // in milli-seconds
+      duration: 3000, // in milli-seconds
       panelClass: [action],
       horizontalPosition: 'end',
       verticalPosition: 'top',
@@ -198,4 +199,107 @@ export class UtilityService {
     return isValid;
   }
 
+  /*
+      !Get Value
+      =======================================
+      Implementation:
+                     TODO Input: form: FormGroup;
+                     formUtility(form, 'value');
+                     ? Output: form.value
+
+      !Get Value By Fields
+      =======================================
+      Implementation:
+                     TODO Input: form: FormGroup;
+                     formUtility(form, 'value', ['userName','password]);
+                     ? Output: form.value
+
+      !Get Errors
+      =======================================
+      Implementation:
+                     TODO Input: form: FormGroup;
+                     formUtility(form, 'errors'); //*** get all errors
+                     OR
+                     formUtility(form, 'errors', ['userName','password]);  //*** get errors by fields
+                     ? Output: { username: {required: true}, password: {required: true} }
+
+      !Get Value Changes
+      =======================================
+      Implementation:
+                     TODO Input: form: FormGroup;
+                     formUtility(form, 'changes');
+                     ? Output: { username: 'yawa@gmail.com', password: 'password@123' }
+  */
+  formUtility(form: FormGroup, type: string, fields?: string[]): any {
+
+    if (form && type !== '') {
+
+      if (type === 'validate') {
+
+        Object.keys(form.controls).forEach(field => {
+          const control = form.get(field);
+          control.markAsTouched({ onlySelf: true });
+        });
+
+        return true;
+      } else {
+
+        const value = form.value;
+        if (!fields) {
+
+          fields = Object.keys(value);
+        }
+
+        for (const field of fields) {
+
+          value[field] = value[field].trim();
+        }
+
+        if (type === 'value' && (!fields || fields.length === 0)) {
+
+          return value;
+        } else if (type === 'value' && fields.length > 0) {
+
+          for (const field of fields) {
+
+            if (!value.hasOwnProperty(field)) {
+              delete value[field];
+            }
+          }
+
+          return value;
+        } else if (type === 'errors') {
+
+          const errors = {};
+
+          for (const field in fields) {
+
+            if (!value.hasOwnProperty(field)) {
+              continue;
+            }
+
+            const control = form.get(field);
+
+            if (control && control.dirty && !control.valid) {
+              errors[field] = control.errors;
+            }
+          }
+
+          return errors;
+        } else if (type === 'changes') {
+
+          const dirty = {};
+          for (const field of fields) {
+
+            if (form.controls[field].dirty) {
+
+              dirty[field] = value[field].trim();
+            }
+          }
+
+          return dirty;
+        }
+      }
+    }
+  }
 }

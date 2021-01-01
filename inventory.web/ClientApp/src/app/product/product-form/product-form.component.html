@@ -2,41 +2,41 @@
 <mat-divider class="form-title-divider"></mat-divider>
 <div mat-dialog-content>
 
-  <form name="productForm" [formGroup]="productForm" novalidate fxLayout="column">
-    <div fxLayout="row" fxLayoutGap="10px">
-      <mat-form-field fxFlex>
+  <form name="fmProduct" [formGroup]="fmProduct">
+    <div class="d-flex">
+      <mat-form-field class="flex-1 m-lr-2">
         <input matInput type="text" placeholder="Product" formControlName="Product" required
           [(ngModel)]="selectedProduct.product">
       </mat-form-field>
 
-      <mat-form-field fxFlex>
+      <mat-form-field class="flex-1 m-lr-2">
         <input matInput type="number" placeholder="Price" formControlName="Price" required
           [(ngModel)]="selectedProduct.price">
       </mat-form-field>
 
-      <mat-form-field fxFlex>
+      <mat-form-field class="flex-1 m-lr-2">
         <input matInput type="number" placeholder="Stock" formControlName="Stock" required
           [(ngModel)]="selectedProduct.stock">
       </mat-form-field>
     </div>
 
-    <div fxLayout="row" fxLayoutGap="10px">
-      <mat-form-field fxFlex>
+    <div class="d-flex">
+      <mat-form-field class="flex-1 m-lr-2">
         <input matInput type="text" placeholder="Company" formControlName="Company" required
           [(ngModel)]="selectedProduct.company">
       </mat-form-field>
 
-      <mat-form-field fxFlex>
+      <mat-form-field class="flex-1 m-lr-2">
         <input matInput type="text" placeholder="Location" formControlName="Location" required
           [(ngModel)]="selectedProduct.location">
       </mat-form-field>
 
-      <mat-form-field fxFlex>
+      <mat-form-field class="flex-1 m-lr-2">
         <input matInput type="text" placeholder="Brand" formControlName="Brand" required
           [(ngModel)]="selectedProduct.brand">
       </mat-form-field>
 
-      <mat-form-field fxFlex>
+      <mat-form-field class="flex-1 m-lr-2">
         <mat-select placeholder="Status" formControlName="StatusListItemId" required
           [(ngModel)]="selectedProduct.statusListItemId">
           <mat-option *ngFor="let dt of statusList;" [value]="dt.listItemId">
@@ -46,8 +46,8 @@
       </mat-form-field>
     </div>
 
-    <div fxLayout="row" fxLayoutGap="10px">
-      <mat-form-field fxFlex>
+    <div class="d-flex">
+      <mat-form-field class="flex-1 m-lr-2">
         <textarea matInput type="text" placeholder="Description" formControlName="Description"
           [(ngModel)]="selectedProduct.description"></textarea>
       </mat-form-field>
@@ -57,5 +57,5 @@
 
 <div mat-dialog-actions align="end">
   <button mat-button (click)="cancelClick()" color="warn">Cancel</button>
-  <button (click)="submitForm()" mat-raised-button color="primary">Save</button>
+  <button type="submit" (click)="submitForm()" mat-raised-button color="primary">Save</button>
 </div>

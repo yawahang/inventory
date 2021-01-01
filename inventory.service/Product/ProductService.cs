@@ -18,7 +18,7 @@ namespace inventory.service.Product
         {
             try
             {
-                var result = await _ds.Get("dbo.SpProductSel", json);
+                string result = await _ds.Get("dbo.SpProductSel", json);
                 return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@ namespace inventory.service.Product
         {
             try
             {
-                var result = await _ds.Insert("dbo.SpProductIns", json);
+                string result = await _ds.Insert("dbo.SpProductIns", json);
                 return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
             }
             catch (Exception ex)
@@ -44,7 +44,7 @@ namespace inventory.service.Product
         {
             try
             {
-                var result = await _ds.Update("dbo.SpProductUpd", json);
+                string result = await _ds.Update("dbo.SpProductUpd", json);
                 return JsonConvert.DeserializeObject<MvResponse<MvProduct>>(result);
             }
             catch (Exception ex)

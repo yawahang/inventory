@@ -19,7 +19,7 @@ namespace inventory.service.Core
         {
             try
             {
-                var result = await _ds.Get("dbo.SpListItemSel", json);
+                string result = await _ds.Get("dbo.SpListItemSel", json);
                 return JsonConvert.DeserializeObject<MvResponse<MvListItem>>(result);
             }
             catch (Exception ex)

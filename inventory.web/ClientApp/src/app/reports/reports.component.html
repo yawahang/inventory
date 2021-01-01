@@ -4,8 +4,8 @@
   </span>
   <mat-card class="param-wrapper">
     <mat-card-content>
-      <form name="fmLogin" [formGroup]="fmReportParam" class="report-param-form" (ngSubmit)="runReport()" novalidate
-        fxLayout="column">
+      <form name="fmReportParam" [formGroup]="fmReportParam" class="report-param-form" (ngSubmit)="runReport()"
+        novalidate fxLayout="column">
         <mat-form-field class="m-8" fxFlex>
           <input matInput type="text" placeholder="StartDate" formControlName="StartDate" required
             [(ngModel)]="mvReportParam.startDate" [max]="startDateMax" [matDatepicker]="startDatePicker"
@@ -36,56 +36,66 @@
     </mat-card-content>
   </mat-card>
 
-  <kendo-grid [data]="gridData" [pageSize]="state.take" [skip]="state.skip" [sort]="state.sort" [group]="state.group"
-    [sortable]="{ mode: 'multiple' }" [pageable]="true" [groupable]="{ showFooter: true }" [resizable]="true"
-    (dataStateChange)="dataStateChange($event)" style="max-height: 660px;">
+  <mat-progress-bar mode="indeterminate" class="loading-grid" color="accent" *ngIf="loading">
+  </mat-progress-bar>
+
+  <kendo-grid #reportGrid [data]="gridView" [pageSize]="pageSize" (pageChange)="pageChange($event)" [resizable]="true"
+    [groupable]="{ showFooter: true }" (groupChange)="groupChange($event)" [group]="groups" [reorderable]="true"
+    [filterable]="true" [filter]="filter" (filterChange)="filterChange($event)" [skip]="skip" [sort]="sort"
+    (sortChange)="sortChange($event);" [scrollable]="'virtual'" [rowHeight]="rowHeight" [height]=""
+    [sortable]="{ allowUnsort: true, mode: 'single' }" (columnReorder)="onColumnReorder($event)"
+    (columnResize)="onColumnResize($event)">
 
     <ng-template kendoGridToolbarTemplate>
-      <button kendoGridPDFCommand icon="file-pdf">Download PDF</button>
-      <button kendoGridExcelCommand icon="file-excel">Download Excel</button>
+      <button kendoGridExcelCommand icon="file-excel" matTooltip="Download Excel">Excel</button>
+      <button kendoGridPDFCommand icon="file-pdf" matTooltip="Download PDF">PDF</button>
     </ng-template>
 
-    <kendo-grid-column field="ProductID" title="Product ID" width="150">
+    <kendo-grid-column field="ProductId" title="ProductId">
     </kendo-grid-column>
-    <kendo-grid-column field="ProductName" title="Product Name">
-      <ng-template kendoGridGroupHeaderColumnTemplate let-group="group" let-aggregates="aggregates">
-        <span title="Group Header Column Template for ProductName">
-          Count: {{ aggregates.Discontinued.count }}
-        </span>
-      </ng-template>
+
+    <kendo-grid-column field="Product" title="Product">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="Description" title="Description">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="Location" title="Location">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="Stock" title="Stock">
       <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
-        <span title="Group Footer Template for ProductName">
-          Count: {{ aggregates.Discontinued.count }}
+        <span title="Total Stock" matTooltip="Total Stock">
+          {{ aggregates.Stock.sum }}
         </span>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="UnitPrice" title="Unit Price" width="150">
-      <ng-template kendoGridGroupHeaderTemplate let-group="group">
-        <span title="Group Header Template for UnitPrice">
-          Price: {{ group.value }}
-        </span>
-      </ng-template>
-      <ng-template kendoGridGroupHeaderColumnTemplate let-group="group" let-aggregates="aggregates">
-        <span title="Group Header Column Template for UnitPrice">
-          Average: {{ aggregates.UnitPrice.average }}
-        </span>
-      </ng-template>
+
+    <kendo-grid-column field="Company" title="Company">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="Brand" title="Brand">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="Status" title="Status">
+    </kendo-grid-column>
+
+    <kendo-grid-column field="Price" title="Price">
       <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
-        <span title="Group Footer Template for UnitPrice">
-          Average: {{ aggregates.UnitPrice.average }}
+        <span title="Total Price" matTooltip="Total Price">
+          {{ aggregates.Stock.sum }}
         </span>
       </ng-template>
     </kendo-grid-column>
-    <kendo-grid-column field="Discontinued" width="200">
-      <ng-template kendoGridCellTemplate let-dataItem>
-        {{ dataItem.Discontinued ? "Yes" : "No" }}
-      </ng-template>
-      <ng-template kendoGridGroupHeaderTemplate let-group="group" let-aggregates="aggregates">
-        <span title="Group Header Template for Discontinued">
-          {{group.value ? 'Discontinued' : 'Not Discontinued'}}
-        </span>
-      </ng-template>
+
+    <kendo-grid-column field="InsertDate" title="InsertDate">
     </kendo-grid-column>
+
+    <kendo-grid-column field="CreatedBy" title="CreatedBy">
+    </kendo-grid-column>
+
+    <kendo-grid-excel [fileName]="'Products.xlsx'" [fetchData]="allData">
+    </kendo-grid-excel>
 
     <kendo-grid-pdf fileName="Products.pdf" [allPages]="true" paperSize="A4" [repeatHeaders]="true" [landscape]="true">
       <kendo-grid-pdf-margin top="2cm" left="1cm" right="1cm" bottom="2cm"></kendo-grid-pdf-margin>
@@ -93,7 +103,6 @@
         <div class="page-template">
           <div class="header">
             <div style="float: right">Page {{ pageNum }} of {{ totalPages }}</div>
-            Multi-page grid with automatic page breaking
           </div>
           <div class="footer">
             Page {{ pageNum }} of {{ totalPages }}
@@ -103,4 +112,12 @@
     </kendo-grid-pdf>
 
   </kendo-grid>
+  <!--report grid footer section-->
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" class="w-100-p">
+    <div fxFlex>
+      <b
+        style="float: right;margin-right: 30px;font-size: 14px;font-weight: 800;">Total&nbsp;Rows:&nbsp;{{gridView.total}}</b>
+    </div>
+  </div>
+  <!--report grid footer section-->
 </div>

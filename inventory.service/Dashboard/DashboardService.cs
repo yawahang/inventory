@@ -18,7 +18,7 @@ namespace inventory.service.Dashboard
         {
             try
             {
-                var result = await _ds.Get("dbo.SpDashboardSel", json);
+                string result = await _ds.Get("dbo.SpDashboardSel", json);
                 return JsonConvert.DeserializeObject<MvResponse<dynamic>>(result);
             }
             catch (Exception ex)

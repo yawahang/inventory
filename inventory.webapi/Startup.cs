@@ -1,5 +1,6 @@
 using inventory.model;
 using inventory.service.Account;
+using inventory.service.Auth;
 using inventory.service.Core;
 using inventory.service.Dashboard;
 using inventory.service.Data;
@@ -141,12 +142,13 @@ namespace inventory.webapi
 
             services.AddMemoryCache();
 
-            services.AddTransient<IAccountService, AccountService>()
+            services.AddTransient<IAuthService, AuthService>()
+                .AddScoped<IDataService, DataService>()
+                .AddTransient<ICoreService, CoreService>()
+                .AddTransient<IAccountService, AccountService>()
                 .AddTransient<IProductService, ProductService>()
                 .AddTransient<IDashboardService, DashboardService>()
                 .AddTransient<IReportService, ReportService>()
-                .AddTransient<ICoreService, CoreService>()
-                .AddScoped<IDataService, DataService>()
                 .AddSingleton(Configuration)
                 .AddHttpContextAccessor();
 

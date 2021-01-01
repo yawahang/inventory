@@ -20,7 +20,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   action: string;
   selectedProduct: MvProduct = <MvProduct>{};
-  productForm: FormGroup;
+  fmProduct: FormGroup;
   statusList: [];
 
   constructor(
@@ -40,7 +40,7 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.productForm = this.fb.group({
+    this.fmProduct = this.fb.group({
       Product: ['', Validators.required],
       Description: '',
       Price: ['', Validators.required],
@@ -62,8 +62,8 @@ export class ProductFormComponent implements OnInit, OnDestroy {
 
   submitForm() {
 
-    this.productForm.updateValueAndValidity();
-    if (this.productForm.valid) {
+    this.us.formUtility(this.fmProduct, 'validate');
+    if (this.fmProduct.valid) {
 
       if (this.action === 'Add') {
 

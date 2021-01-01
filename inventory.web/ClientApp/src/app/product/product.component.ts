@@ -72,7 +72,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     }
 
     const dialogRef = this.dialog.open(ProductFormComponent, {
-      width: '40vw',
+      width: '45vw',
       data: { data: { ...this.selectedProduct }, action: action }
     });
 
