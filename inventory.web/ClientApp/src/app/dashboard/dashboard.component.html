@@ -5,7 +5,7 @@
 
   <div *ngIf="box" class="dashboard-wrapper">
 
-    <mat-card class="d-tile gradient-green-linear">
+    <mat-card class="d-box gradient-green-linear">
       <mat-card-header>
         <mat-card-subtitle>Available Stock</mat-card-subtitle>
       </mat-card-header>
@@ -16,7 +16,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="d-tile gradient-orange-linear">
+    <mat-card class="d-box gradient-orange-linear">
       <mat-card-header>
         <mat-card-subtitle>Out Of Stock</mat-card-subtitle>
       </mat-card-header>
@@ -27,7 +27,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="d-tile gradient-red-linear">
+    <mat-card class="d-box gradient-red-linear">
       <mat-card-header>
         <mat-card-subtitle>Damaged Stock</mat-card-subtitle>
       </mat-card-header>
@@ -38,7 +38,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="d-tile gradient-blue-linear">
+    <mat-card class="d-box gradient-blue-linear">
       <mat-card-header>
         <mat-card-subtitle>Stock This Year</mat-card-subtitle>
       </mat-card-header>
@@ -54,7 +54,7 @@
   <div class="dashboard-wrapper">
     <mat-card *ngIf="barLineCol" class="d-chart">
       <mat-card-header>
-        <mat-card-title>Top 5 Stock Trend This Month</mat-card-title>
+        <mat-card-subtitle>Stock Trend Yearly</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <ng-container *ngTemplateOutlet="barLineColChrt; context: { $implicit: barLineCol }">
@@ -64,7 +64,7 @@
 
     <mat-card *ngIf="pieDonut" class="d-chart">
       <mat-card-header>
-        <mat-card-title>Top 5 Stock Dist By Status This Month</mat-card-title>
+        <mat-card-subtitle>Stock Dist By Status Yearly</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <ng-container *ngTemplateOutlet="pieDonutChrt; context: { $implicit: pieDonut }">

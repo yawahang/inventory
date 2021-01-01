@@ -18,7 +18,7 @@ export class ProductComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll: Subject<any>;
 
-  displayedColumns: string[] = ['productId', 'product', 'description', 'price', 'stock', 'company', 'brand', 'status', 'createdBy'];
+  displayedColumns: string[] = ['productId', 'product', 'description', 'price', 'stock', 'company', 'brand', 'status', 'location', 'createdBy'];
   dataSource: MatTableDataSource<MvProduct>;
   gridData: MvProduct[] = [];
   selectedProduct: MvProduct = <MvProduct>{};

@@ -145,6 +145,19 @@ mat-icon, a{
     color: #fff !important;
 }
 
-.m-rl-8px{
+.m-rl-8{
   margin: 0px 8px !important;
+}
+.mat-snack-bar-container{
+  .mat-button-wrapper{
+    color: #fff;
+  }
+}
+
+.mat-snack-bar-container{
+  margin-top: 60px !important; 
+  margin-right: 5px !important; 
+}
+.m-8{
+  margin: 8px !important;
 }

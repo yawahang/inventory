@@ -2,10 +2,16 @@ mat-card-title{
     margin-left:0px;font-size:medium;
 }
 
-mat-card-subtitle{
+.d-box .mat-card-subtitle{
     margin-left:0px; 
     color: #fff;
     font-size: medium !important;
+}
+
+.d-chart .mat-card-subtitle{
+    margin-left:0px; 
+    color: #4a5b5b;
+    font-size: large !important;
 }
 
 mat-card{
@@ -17,14 +23,14 @@ kendo-chart{
     height: 90%;
 }
  
-.d-tile{
+.d-box{
     height: 150px;
     width: 100%;
     flex: 1;
     margin: 10px;
 }
 
-.d-tile > 
+.d-box > 
 .mat-card-content{
     height: 100%;
     width: 100%;

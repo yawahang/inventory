@@ -10,6 +10,7 @@ namespace inventory.model
         public string Product { get; set; }
         public string Description { get; set; }
         public string Company { get; set; }
+        public string Brand { get; set; }
         public string Location { get; set; }
         public int Stock { get; set; }
         public string Status { get; set; }

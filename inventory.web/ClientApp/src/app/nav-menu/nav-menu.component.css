@@ -81,6 +81,7 @@ mat-icon:hover{
 
 .logout-icon{
   color: #fff !important;
+  margin-left: 10px !important;
 }
 
 .logout-icon:hover{

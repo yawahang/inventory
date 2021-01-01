@@ -45,9 +45,6 @@ namespace inventory.webapi
             services.AddMvcCore().AddNewtonsoftJson(options =>
             {
                 options.UseCamelCasing(true);
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             });
 
             var allowOrigin = Configuration.GetSection("AllowOrigin").Get<List<string>>(); // configure Chors for endpoint

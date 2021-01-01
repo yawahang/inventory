@@ -1,6 +1,12 @@
+import { UtilityService } from 'src/core/service/utility.service';
+import { CoreService } from './../../core/service/core.service';
 import { Component, OnInit } from '@angular/core';
 import { process, State } from '@progress/kendo-data-query';
 import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
+import { ReportService } from './report.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-reports',
@@ -9,6 +15,7 @@ import { DataStateChangeEvent } from '@progress/kendo-angular-grid';
 })
 export class ReportsComponent implements OnInit {
 
+  private _unsubscribeAll: Subject<any>;
   aggregates: any[];
 
   state: State = {
@@ -21,15 +28,58 @@ export class ReportsComponent implements OnInit {
   data: any;
   gridData: any;
 
-  constructor() {
+  fmReportParam: FormGroup;
+  mvReportParam: MvReportParam = <MvReportParam>{};
+  statusList: [];
+  startDateMax = Date;
+  endDateMin = Date;
 
+  constructor(public fb: FormBuilder,
+    private rs: ReportService,
+    private cs: CoreService,
+    private us: UtilityService) {
+    this._unsubscribeAll = new Subject();
   }
 
   ngOnInit() {
 
-    this.aggregates = [{ field: 'UnitPrice', aggregate: 'average' }, { field: 'Discontinued', aggregate: 'count' }];
-    this.getReportData();
-    this.gridData = process(this.data, this.state);
+    this.fmReportParam = this.fb.group({
+      StartDate: ['', Validators.required],
+      EndDate: ['', Validators.required],
+      Status: ['']
+    });
+
+    this.getStatusList();
+  }
+
+  startDateInput(e: any) {
+
+    if (e) {
+
+      this.endDateMin = e.value;
+    }
+  }
+
+  endDateInput(e: any) {
+
+    if (e) {
+
+      this.startDateMax = e.value;
+    }
+  }
+
+  getStatusList() {
+
+    this.cs.getListItem({ Category: 'ProductStatus' }).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+
+      if (response) {
+
+        this.statusList = response;
+      } else {
+
+        this.statusList = [];
+      }
+    });
   }
 
   public dataStateChange(state: DataStateChangeEvent): void {
@@ -43,79 +93,26 @@ export class ReportsComponent implements OnInit {
     this.gridData = process(this.data, this.state);
   }
 
-  getReportData() {
+  runReport() {
 
-    this.data = [{
-      'ProductID': 1,
-      'ProductName': 'Chai',
-      'UnitPrice': 18.0000,
-      'Discontinued': true
-    }, {
-      'ProductID': 2,
-      'ProductName': 'Chang',
-      'UnitPrice': 19.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 3,
-      'ProductName': 'Aniseed Syrup',
-      'UnitPrice': 10.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 4,
-      'ProductName': "Chef Anton\'s Cajun Seasoning",
-      'UnitPrice': 22.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 5,
-      'ProductName': "Chef Anton\'s Gumbo Mix",
-      'UnitPrice': 21.3500,
-      'Discontinued': false
-    }, {
-      'ProductID': 6,
-      'ProductName': "Grandma\'s Boysenberry Spread",
-      'UnitPrice': 25.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 7,
-      'ProductName': "Chai",
-      'UnitPrice': 22.0000,
-      'Discontinued': true
-    },
-    {
-      'ProductID': 8,
-      'ProductName': 'Chai1',
-      'UnitPrice': 18.0000,
-      'Discontinued': true
-    }, {
-      'ProductID': 9,
-      'ProductName': 'Chang1',
-      'UnitPrice': 19.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 10,
-      'ProductName': 'Aniseed Syrup1',
-      'UnitPrice': 10.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 11,
-      'ProductName': "Cajun Seasoning",
-      'UnitPrice': 22.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 12,
-      'ProductName': "Gumbo Mix",
-      'UnitPrice': 21.3500,
-      'Discontinued': false
-    }, {
-      'ProductID': 13,
-      'ProductName': "Boysenberry Spread",
-      'UnitPrice': 25.0000,
-      'Discontinued': false
-    }, {
-      'ProductID': 14,
-      'ProductName': "Chai3",
-      'UnitPrice': 22.0000,
-      'Discontinued': true
-    }];
+    this.rs.getReport(this.mvReportParam).pipe(takeUntil(this._unsubscribeAll)).subscribe(response => {
+
+      if (response) {
+
+        this.data = response;
+      } else {
+
+        this.us.openSnackBar('Failed to load report', 'error');
+      }
+    });
+
+    this.aggregates = [{ field: 'UnitPrice', aggregate: 'average' }, { field: 'Discontinued', aggregate: 'count' }];
+    this.gridData = process(this.data, this.state);
   }
+}
+
+export interface MvReportParam {
+  startDate: Date;
+  endDate: Date;
+  status: number[];
 }
