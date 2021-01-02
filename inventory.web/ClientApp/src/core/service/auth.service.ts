@@ -12,7 +12,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class AuthService implements OnInit {
 
   jwtHelper: JwtHelperService = new JwtHelperService();
-  subAuthenticated = new BehaviorSubject<boolean>(false);
+  subAuthenticated = new BehaviorSubject<boolean>(null);
 
   constructor(private http: HttpClient) {
   }

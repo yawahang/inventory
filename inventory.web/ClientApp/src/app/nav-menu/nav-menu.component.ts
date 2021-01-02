@@ -18,8 +18,18 @@ export class NavMenuComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.isAuthenticated = this.auth.getLocalStorage('isAuthenticated') || false;
+    this.auth.subAuthenticated.subscribe((val) => {
 
+      if (val) {
+
+        this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
+      } else if (val !== null) {
+
+        this.auth.redirectToLogin();
+      }
+    });
+
+    this.isAuthenticated = this.auth.getLocalStorage('isAuthenticated') || false;
     if (this.isAuthenticated) {
 
       this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];

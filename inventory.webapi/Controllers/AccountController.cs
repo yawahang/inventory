@@ -3,8 +3,6 @@ using inventory.service.Account;
 using inventory.service.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
