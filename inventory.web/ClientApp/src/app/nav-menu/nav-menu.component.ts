@@ -32,7 +32,7 @@ export class NavMenuComponent implements OnInit {
     this.isAuthenticated = this.auth.getLocalStorage('isAuthenticated') || false;
     if (this.isAuthenticated) {
 
-      if (!window.location.href.includes('/login')) { // if not login page
+      if (!window.location.href.includes('/login') && !window.location.href.endsWith('/')) { // if not login page
 
         this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
       } else {
