@@ -38,7 +38,7 @@ const appRoutes: Routes = [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }),
     MatSnackBarModule,
     MatIconModule
   ],
