@@ -12,7 +12,7 @@ code {
   border-color: #1861ac;
 }
 html, body { overflow: auto; height: 100%; width: 100%;  }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;background-color: #eedcdc; }
 
 .overflow-y {
   overflow-y: scroll;
@@ -67,8 +67,8 @@ table {
 /* Mat Table */
 
 .breadcrumb {
-  color: #186417;
-  background-image: linear-gradient(to right, #b9e6e5 , #edf6f6);
+  color: #032e02;
+  background-image: linear-gradient(to right, #c8c4c4, #f9e9e9);
   border-radius: 0px;
   display: flex;
   flex-wrap: wrap;
