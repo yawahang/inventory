@@ -40,11 +40,6 @@ namespace inventory.service.Data
             return conn;
         }
 
-        public void Dispose()
-        {
-
-        }
-
         public async Task<string> Get(string sp, string json)
         {
             using var conn = await GetConnection();
@@ -94,6 +89,11 @@ namespace inventory.service.Data
             {
                 throw ex;
             }
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

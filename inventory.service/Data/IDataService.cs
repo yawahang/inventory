@@ -1,5 +1,4 @@
-﻿using Dapper;
-using inventory.model;
+﻿using inventory.model;
 using System;
 using System.Collections.Generic;
 using System.Data;

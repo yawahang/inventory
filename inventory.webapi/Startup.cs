@@ -183,7 +183,7 @@ namespace inventory.webapi
                     options.Run(
                         async context =>
                         {
-                            context.Response.StatusCode = (int)System.Net.HttpStatusCode.InternalServerError;
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                             context.Response.ContentType = "text/html";
                             var exceptionObject = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerFeature>();
                             if (null != exceptionObject)

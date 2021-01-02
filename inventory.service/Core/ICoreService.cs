@@ -8,6 +8,7 @@ namespace inventory.service.Core
         /// <summary>
         /// Get ListItem
         /// </summary>
+        /// <param name="Json">{"Category": "ProductStatus"}</param>
         /// <returns>List of ListItems</returns>
         Task<MvResponse<MvListItem>> ListItem(string json);
     }
