@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from 'src/core/service/auth.service';
 
 @Component({
@@ -8,9 +8,8 @@ import { AuthService } from 'src/core/service/auth.service';
 })
 export class NavMenuComponent implements OnInit {
 
+  @Input('navigationList') navigationList: MvNavigation[];
   isExpanded = false;
-  navigationList: MvNavigation[];
-  isAuthenticated = false;
 
   constructor(public auth: AuthService
   ) {
@@ -18,31 +17,6 @@ export class NavMenuComponent implements OnInit {
   }
   ngOnInit() {
 
-    this.auth.subAuthenticated.subscribe((val) => {
-
-      if (val) {
-
-        this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
-      } else if (val !== null) {
-
-        this.auth.redirectToLogin();
-      }
-    });
-
-    this.isAuthenticated = this.auth.getLocalStorage('isAuthenticated') || false;
-    if (this.isAuthenticated) {
-
-      if (window.location.href.endsWith('/login') || window.location.href.endsWith('/')) {
-
-        this.isAuthenticated = false;
-      } else { // if not login page
-
-        this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
-      }
-    } else {
-
-      this.auth.redirectToLogin();
-    }
   }
 
   collapse() {

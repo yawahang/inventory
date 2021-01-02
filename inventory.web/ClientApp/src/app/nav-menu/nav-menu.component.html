@@ -1,4 +1,4 @@
-<header *ngIf="isAuthenticated">
+<header>
   <nav class="nav-bar-wrp navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
     <div class="row nav-bar-container">
       <div class="col-6 nav-logo">
@@ -9,8 +9,9 @@
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
-      <div class="col-6 nav-menu navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
-        <mat-icon class="logout-icon" (click)="auth.logout()" *ngIf="isAuthenticated" matTooltip="Logout">
+      <div class="col-6 nav-menu navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
+        [ngClass]="{ show: isExpanded }">
+        <mat-icon class="logout-icon" (click)="auth.logout()" matTooltip="Logout">
           exit_to_app</mat-icon>
         <ul class="navbar-nav flex-grow">
           <li *ngFor="let nav of navigationList" class="nav-item m-rl-8px" [routerLinkActive]="['link-active']">

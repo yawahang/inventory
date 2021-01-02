@@ -156,7 +156,6 @@ export class AuthService implements OnInit {
     this.clearLocalStorage();
     // this.ngxCache.clearCache();
     this.setLocalStorage('isAuthenticated', false);
-    this.subAuthenticated.next(false);
     this.redirectToLogin();
   }
 
