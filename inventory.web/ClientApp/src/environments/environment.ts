@@ -4,7 +4,6 @@ export const environment = {
   webUrl: 'http://localhost:4200/',
   redirectUrl: '/dashboard',
   secretKey: 'secretKey@123',
-  tokenKey: 'InvToken',
   storageKey: 'Inventory',
   dashboardConfig: {
     maxAxisDivisions: {

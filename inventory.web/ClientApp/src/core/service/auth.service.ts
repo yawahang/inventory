@@ -47,12 +47,12 @@ export class AuthService implements OnInit {
 
   setToken(token: any) {
 
-    this.setLocalStorage(environment.tokenKey, token);
+    this.setLocalStorage('token', token);
   }
 
   getToken(): string {
 
-    return this.getLocalStorage(environment.tokenKey);
+    return this.getLocalStorage('token');
   }
 
   getTokenValueByKey(key: string): any {

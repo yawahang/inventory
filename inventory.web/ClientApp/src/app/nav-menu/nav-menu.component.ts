@@ -16,7 +16,7 @@ export class NavMenuComponent implements OnInit {
   ) {
 
   }
-  ngOnInit(): void {
+  ngOnInit() {
 
     this.auth.subAuthenticated.subscribe((val) => {
 
@@ -32,12 +32,12 @@ export class NavMenuComponent implements OnInit {
     this.isAuthenticated = this.auth.getLocalStorage('isAuthenticated') || false;
     if (this.isAuthenticated) {
 
-      if (!window.location.href.includes('/login') && !window.location.href.endsWith('/')) { // if not login page
-
-        this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
-      } else {
+      if (window.location.href.endsWith('/login') || window.location.href.endsWith('/')) {
 
         this.isAuthenticated = false;
+      } else { // if not login page
+
+        this.navigationList = this.auth.getTokenValueByKey('Navigation') || [];
       }
     } else {
 

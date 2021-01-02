@@ -93,7 +93,7 @@ namespace inventory.service.Data
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+
         }
     }
 }

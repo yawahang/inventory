@@ -17,17 +17,17 @@ export class WebApiService {
 
   }
 
-  post(url: string, param: object): Observable<any> {
-
-    return this.http.post(this.apiUrl + url, { Json: param }, { headers: this.getHeaderOptions() });
-  }
-
-  get(url: string, param: object): Observable<any> {
+  get(url: string, param?: object): Observable<any> {
 
     const params = {} as MvHttpOptions;
     params.headers = this.getHeaderOptions();
     params.params = { Json: JSON.stringify(param) };
     return this.http.get(this.apiUrl + url, params);
+  }
+
+  post(url: string, param?: object): Observable<any> {
+
+    return this.http.post(this.apiUrl + url, { Json: param }, { headers: this.getHeaderOptions() });
   }
 
   getHeaderOptions(): HttpHeaders {
