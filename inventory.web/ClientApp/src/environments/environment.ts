@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8000/api/',
-  webUrl: 'http://localhost:9000/',
+  apiUrl: 'http://localhost:5200/api/',
+  webUrl: 'http://localhost:4200/',
   redirectUrl: '/dashboard',
   secretKey: 'secretKey@123',
   tokenKey: 'InvToken',

@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve": "node --max_old_space_size=5048 ./node_modules/@angular/cli/bin/ng serve --port=9000"
+    "serve": "node --max_old_space_size=5048 ./node_modules/@angular/cli/bin/ng serve --port=4200"
   },
   "private": true,
   "dependencies": {
