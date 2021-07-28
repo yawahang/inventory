@@ -1,5 +1,5 @@
 # Inventory Management
-Inventory Management Project For Traineeship
+A Demo Inventory Management Project
 
 ## Technologies Used
   - Database: SQL Server 2017 / SSMS 2018
