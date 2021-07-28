@@ -1,5 +1,5 @@
 # Inventory Management
-Inventory Management Project
+Inventory Management Project For Traineeship
 
 ## Technologies Used
   - Database: SQL Server 2017 / SSMS 2018
@@ -9,9 +9,9 @@ Inventory Management Project
   - UI Framework: KendoUI (Telerik), Angular Material
   
   ## Features
-    - Core : JwtBearer Token, Gzip & Brotli Compression, Session/Cookie
-    - Add/Edit Product
-    - Product listing
-    - Product Report (Basic Grid or Spreadsheet Report , Filtering, Sorting, Grouping, Aggregation, Column ReOrdering)
-    - Dashboard (KPI, Trend, Donut)
+  - Core : JwtBearer Token, Gzip & Brotli Compression, Session/Cookie
+  - Add/Edit Product
+  - Product listing
+  - Product Report (Basic Grid or Spreadsheet Report , Filtering, Sorting, Grouping, Aggregation, Column ReOrdering)
+  - Dashboard (KPI, Trend, Donut)
   
